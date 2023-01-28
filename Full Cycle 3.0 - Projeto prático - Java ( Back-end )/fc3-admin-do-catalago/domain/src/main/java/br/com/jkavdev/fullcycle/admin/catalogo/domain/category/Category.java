@@ -1,11 +1,13 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.AggregateRoot;
+
 import java.time.Instant;
 import java.util.UUID;
 
-public class Category {
+public class Category extends AggregateRoot<CategoryID> {
 
-    private String id;
+    private CategoryID id;
 
     private String name;
 
@@ -20,31 +22,32 @@ public class Category {
     private Instant deletedAt;
 
     private Category(
-            final String id,
-            final String name,
-            final String description,
+            final CategoryID anId,
+            final String aName,
+            final String aDescription,
             final boolean isActive,
-            final Instant createdAt,
-            final Instant updatedAt,
-            final Instant deletedAt
+            final Instant aCreatedAt,
+            final Instant aUpdatedAt,
+            final Instant aDeletedAt
     ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
+        super(anId);
+        this.id = anId;
+        this.name = aName;
+        this.description = aDescription;
         this.isActive = isActive;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+        this.createdAt = aCreatedAt;
+        this.updatedAt = aUpdatedAt;
+        this.deletedAt = aDeletedAt;
     }
 
     public static Category newCategory(String name, String description, boolean isActive) {
-        final var id = UUID.randomUUID().toString();
+        final var id = CategoryID.unique();
         final var now = Instant.now();
 
         return new Category(id, name, description, isActive, now, now, null);
     }
 
-    public String getId() {
+    public CategoryID getId() {
         return id;
     }
 
