@@ -3,7 +3,6 @@ package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.AggregateRoot;
 
 import java.time.Instant;
-import java.util.UUID;
 
 public class Category extends AggregateRoot<CategoryID> {
 
