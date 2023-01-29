@@ -11,31 +11,31 @@ public class CategoryTest {
     public void givenAValidParams_whenCallNewACategory_thenInstantiateACategory() {
         final var expectedName = "Filmes";
         final var expectedDescription = "Melhor categoria";
-        final var expecteIsActive = true;
+        final var expectedIsActive = true;
 
         final var actualCategory =
-                Category.newCategory(expectedName, expectedDescription, expecteIsActive);
+                Category.newCategory(expectedName, expectedDescription, expectedIsActive);
 
         Assertions.assertNotNull(actualCategory);
         Assertions.assertNotNull(actualCategory.getId());
         Assertions.assertEquals(expectedName, actualCategory.getName());
         Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
-        Assertions.assertEquals(expecteIsActive, actualCategory.isActive());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
         Assertions.assertNotNull(actualCategory.getCreatedAt());
         Assertions.assertNotNull(actualCategory.getUpdatedAt());
         Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
     @Test
-    public void givenAnInvalidNullName_whenCallNewACategoryAndValidate_thenshouldReceveError() {
+    public void givenAnInvalidNullName_whenCallNewACategoryAndValidate_thenShouldReceiveAnError() {
         final String expectedName = null;
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";
         final var expectedDescription = "Melhor categoria";
-        final var expecteIsActive = true;
+        final var expectedIsActive = true;
 
         final var actualCategory =
-                Category.newCategory(expectedName, expectedDescription, expecteIsActive);
+                Category.newCategory(expectedName, expectedDescription, expectedIsActive);
 
         final var actualException =
                 Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
