@@ -1,9 +1,20 @@
 plugins {
     id 'java'
+//    adicionando plugin que fornece facilidades para rodar a aplicacao
+    id 'application'
+//    plugins do spring e spring boot
+    id 'org.springframework.boot' version '2.7.8'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 group 'br.com.jkavdev.fullcycle.admin.catalogo.infrastructure'
 version '1.0-SNAPSHOT'
+
+// sobrescrevendo o bootjar para gerar o pacote da aplicacao na raiz do projeto
+bootJar {
+    archiveName 'application.jar'
+    destinationDirectory.set(file("${rootProject.buildDir}/libs"))
+}
 
 repositories {
     mavenCentral()
@@ -13,8 +24,13 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+//    utilizando o servidor undertow, por se mostrar mais performatico que o tomcat
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
