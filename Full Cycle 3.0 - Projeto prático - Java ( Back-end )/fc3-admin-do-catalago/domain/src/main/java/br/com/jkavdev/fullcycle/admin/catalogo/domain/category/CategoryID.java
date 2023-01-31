@@ -9,7 +9,7 @@ public class CategoryID extends Indetifier {
 
     private final String value;
 
-    public CategoryID(final String id) {
+    private CategoryID(final String id) {
         Objects.requireNonNull(id);
         this.value = id;
     }
