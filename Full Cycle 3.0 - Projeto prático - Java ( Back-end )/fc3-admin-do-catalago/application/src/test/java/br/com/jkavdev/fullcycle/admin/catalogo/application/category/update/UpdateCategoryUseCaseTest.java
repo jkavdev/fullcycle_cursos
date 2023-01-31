@@ -41,6 +41,7 @@ public class UpdateCategoryUseCaseTest {
 //    4 - teste simulando um erro generico vindo do gateway
 //    5 - teste atualizar categoria passando id invalido
 
+//    TODO: teste esta incerto, uma vez roda ok, se rodar novamente, quebra kkkk
     @Test
     public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId() {
         final var aCategory =
@@ -80,7 +81,8 @@ public class UpdateCategoryUseCaseTest {
                                 && Objects.equals(expectedId, anUpdatedCategory.getId())
                                 && Objects.equals(aCategory.getCreatedAt(), anUpdatedCategory.getCreatedAt())
                                 && aCategory.getUpdatedAt().isBefore(anUpdatedCategory.getUpdatedAt())
-                                && Objects.isNull(anUpdatedCategory.getDeletedAt())));
+                                && Objects.isNull(anUpdatedCategory.getDeletedAt())
+                ));
     }
 
     @Test
