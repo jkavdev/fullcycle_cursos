@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.flywaydb:flyway-mysql:9.12.0'
+    }
+}
+
 plugins {
     id 'java'
 //    adicionando plugin que fornece facilidades para rodar a aplicacao
@@ -5,6 +14,7 @@ plugins {
 //    plugins do spring e spring boot
     id 'org.springframework.boot' version '2.7.8'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.flywaydb.flyway' version '9.12.0'
 }
 
 group 'br.com.jkavdev.fullcycle.admin.catalogo.infrastructure'
@@ -36,6 +46,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     testRuntimeOnly('com.h2database:h2')
+}
+
+flyway {
+    url = System.getenv('FLYWAY_DB') ?: 'jdbc:mysql://localhost:3306/adm_videos'
+    user = System.getenv('FLYWAY_USER') ?: 'root'
+    password = System.getenv('FLYWAY_PASS') ?: '123456'
 }
 
 test {
