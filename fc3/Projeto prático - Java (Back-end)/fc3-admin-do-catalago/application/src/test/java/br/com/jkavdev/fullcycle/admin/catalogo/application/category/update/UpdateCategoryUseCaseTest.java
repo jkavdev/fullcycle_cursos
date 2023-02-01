@@ -151,7 +151,7 @@ public class UpdateCategoryUseCaseTest {
 
         Mockito.verify(categoryGateway, times(1)).findById(eq(expectedId));
 
-        Mockito.verify(categoryGateway, times(1)).update(argThat(
+         Mockito.verify(categoryGateway, times(1)).update(argThat(
                 anUpdatedCategory -> {
                     return
                             Objects.equals(expectedName, anUpdatedCategory.getName())
