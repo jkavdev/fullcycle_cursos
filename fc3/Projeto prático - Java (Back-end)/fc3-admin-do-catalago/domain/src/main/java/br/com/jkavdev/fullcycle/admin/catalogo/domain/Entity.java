@@ -9,7 +9,7 @@ public abstract class Entity<ID extends Indetifier> {
     protected final ID id;
 
     protected Entity(final ID id) {
-        this.id = id;
+        this.id = Objects.requireNonNull(id, "'id' should not be null");
     }
 
     public ID getId() {
