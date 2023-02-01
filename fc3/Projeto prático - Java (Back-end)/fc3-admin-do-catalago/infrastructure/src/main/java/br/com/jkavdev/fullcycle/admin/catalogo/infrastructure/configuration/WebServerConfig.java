@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("br.com.jkavdev.fullcycle.admin.catalogo")
-public class WebserverConfig {
+public class WebServerConfig {
 }

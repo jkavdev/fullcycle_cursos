@@ -1,9 +1,9 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.MysqlGatewayTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.CategorySearchQuery;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.MysqlGatewayTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
