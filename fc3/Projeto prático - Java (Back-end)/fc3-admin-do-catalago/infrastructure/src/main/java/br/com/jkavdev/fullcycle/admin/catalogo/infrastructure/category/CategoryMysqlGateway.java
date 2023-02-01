@@ -5,6 +5,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class CategoryMysqlGateway implements CategoryGateway {
 
     @Override
     public Category create(Category aCategory) {
-        return null;
+        return this.categoryRepository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
     }
 
     @Override
