@@ -17,8 +17,8 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
     }
 
     @Override
-    public CategoryOutput execute(String anIn) {
-        CategoryID aCategoryId = CategoryID.from(anIn);
+    public CategoryOutput execute(String anId) {
+        CategoryID aCategoryId = CategoryID.from(anId);
         return this.categoryGateway.findById(aCategoryId)
                 .map(CategoryOutput::from)
                 .orElseThrow(notFound(aCategoryId));
