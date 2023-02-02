@@ -6,13 +6,13 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.Error;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
-import io.vavr.API;
 import io.vavr.control.Either;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import static io.vavr.API.Left;
+import static io.vavr.API.Try;
 
 public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
 
@@ -49,7 +49,7 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
     }
 
     private Either<Notification, UpdateCategoryOutput> update(final Category aCategory) {
-        return API.Try(() -> this.categoryGateway.update(aCategory))
+        return Try(() -> this.categoryGateway.update(aCategory))
                 .toEither()
                 .bimap(Notification::create, UpdateCategoryOutput::from);
     }

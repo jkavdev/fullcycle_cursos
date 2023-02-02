@@ -34,6 +34,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
+    implementation('io.vavr:vavr:0.10.4')
+
     implementation 'mysql:mysql-connector-java:8.0.32'
 
 //    utilizando o servidor undertow, por se mostrar mais performatico que o tomcat

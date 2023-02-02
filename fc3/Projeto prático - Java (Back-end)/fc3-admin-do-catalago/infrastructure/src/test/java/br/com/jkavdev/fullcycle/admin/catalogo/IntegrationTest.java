@@ -16,10 +16,7 @@ import java.lang.annotation.*;
 // para testes integrados precisamos do spring com todo o seu contexto
 @SpringBootTest(classes = WebServerConfig.class)
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter
-@ExtendWith(CleanUpExtension.class)
+@ExtendWith(MySQLCleanUpExtension.class)
 public @interface IntegrationTest {
 
 }
-
-
-

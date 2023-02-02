@@ -7,14 +7,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collection;
 
-public class CleanUpExtension implements BeforeEachCallback {
+public class MySQLCleanUpExtension implements BeforeEachCallback {
 
     @Override
-    public void beforeEach(ExtensionContext context) {
+    public void beforeEach(final ExtensionContext context) {
         final var repositories = SpringExtension
                 .getApplicationContext(context)
                 .getBeansOfType(CrudRepository.class)
                 .values();
+
+        cleanUp(repositories);
     }
 
     private void cleanUp(final Collection<CrudRepository> repositories) {

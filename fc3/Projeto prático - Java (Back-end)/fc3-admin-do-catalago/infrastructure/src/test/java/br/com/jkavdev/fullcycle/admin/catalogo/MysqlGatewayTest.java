@@ -21,7 +21,7 @@ import java.lang.annotation.*;
         @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*MysqlGateway")
 })
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter
-@ExtendWith(CleanUpExtension.class)
+@ExtendWith(MySQLCleanUpExtension.class)
 public @interface MysqlGatewayTest {
 
 }
