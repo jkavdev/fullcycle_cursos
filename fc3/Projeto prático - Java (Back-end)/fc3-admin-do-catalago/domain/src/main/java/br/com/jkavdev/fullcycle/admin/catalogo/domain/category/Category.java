@@ -136,7 +136,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
             final String aDescription,
             final boolean isActive
     ) {
-        if (isActive()) {
+        if (isActive) {
             activate();
         } else {
             deactivate();
