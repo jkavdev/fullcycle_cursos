@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @DataJpaTest
 // escaneando apenas os beans jpa
 @ComponentScan(includeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*MysqlGateway")
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MysqlGateway]")
 })
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter
 @ExtendWith(MySQLCleanUpExtension.class)
