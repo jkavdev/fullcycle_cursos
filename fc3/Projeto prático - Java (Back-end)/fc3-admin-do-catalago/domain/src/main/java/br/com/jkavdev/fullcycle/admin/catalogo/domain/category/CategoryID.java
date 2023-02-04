@@ -1,11 +1,11 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.Indetifier;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.Identifier;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class CategoryID extends Indetifier {
+public class CategoryID extends Identifier {
 
     private final String value;
 

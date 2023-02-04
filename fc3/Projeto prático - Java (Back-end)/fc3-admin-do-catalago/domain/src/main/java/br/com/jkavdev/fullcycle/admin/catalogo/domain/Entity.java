@@ -4,7 +4,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.ValidationHandl
 
 import java.util.Objects;
 
-public abstract class Entity<ID extends Indetifier> {
+public abstract class Entity<ID extends Identifier> {
 
     protected final ID id;
 

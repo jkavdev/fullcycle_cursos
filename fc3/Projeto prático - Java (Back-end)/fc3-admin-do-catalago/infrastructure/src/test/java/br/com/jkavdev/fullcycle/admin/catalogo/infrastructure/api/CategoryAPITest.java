@@ -8,6 +8,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.get
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.Error;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryApiInput;
@@ -191,16 +192,15 @@ public class CategoryAPITest {
     @Test
     public void givenAnInvalidId_whenCallsGetCategory_shouldReturnNotFound() throws Exception {
 //        given
-        final var expectedId = "123";
+        final var expectedId = CategoryID.from("123");
         final var expectedErrorMessage = "Category with ID 123 was not found";
 
-        when(getCategoryByIdUseCase.execute(eq(expectedId)))
-                .thenThrow(DomainException.with(
-                        new Error("Category with ID %s was not found".formatted(expectedId))
-                ));
+        when(getCategoryByIdUseCase.execute(any()))
+                .thenThrow(NotFoundException.with(Category.class, expectedId));
 
 //        when
-        final var request = get("/categories/{id}", expectedId);
+        final var request = get("/categories/{id}", expectedId)
+                .contentType(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
