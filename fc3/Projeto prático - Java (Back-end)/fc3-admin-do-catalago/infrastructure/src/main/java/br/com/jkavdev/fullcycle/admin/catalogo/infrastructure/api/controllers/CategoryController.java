@@ -3,6 +3,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.controllers;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.create.CreateCategoryCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.create.CreateCategoryOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.create.CreateCategoryUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.category.delete.DeleteCategoryUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryOutput;
@@ -29,13 +30,18 @@ public class CategoryController implements CategoryAPI {
 
     private final UpdateCategoryUseCase updateCategoryUseCase;
 
+    private final DeleteCategoryUseCase deleteCategoryUseCase;
+
     public CategoryController(
             final CreateCategoryUseCase createCategoryUseCase,
             final GetCategoryByIdUseCase getCategoryByIdUseCase,
-            final UpdateCategoryUseCase updateCategoryUseCase) {
+            final UpdateCategoryUseCase updateCategoryUseCase,
+            final DeleteCategoryUseCase deleteCategoryUseCase
+    ) {
         this.createCategoryUseCase = Objects.requireNonNull(createCategoryUseCase);
         this.getCategoryByIdUseCase = Objects.requireNonNull(getCategoryByIdUseCase);
         this.updateCategoryUseCase = Objects.requireNonNull(updateCategoryUseCase);
+        this.deleteCategoryUseCase = Objects.requireNonNull(deleteCategoryUseCase);
     }
 
     @Override
@@ -91,6 +97,11 @@ public class CategoryController implements CategoryAPI {
 
         return this.updateCategoryUseCase.execute(aCommand)
                 .fold(onError, onSuccess);
+    }
+
+    @Override
+    public void deleteById(final String anID) {
+        this.deleteCategoryUseCase.execute(anID);
     }
 
 }
