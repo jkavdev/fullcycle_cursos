@@ -1,9 +1,10 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.controllers;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryApiOutput;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryApiInput;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryApiInput;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryListResponse;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +30,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    ResponseEntity<?> createCategory(@RequestBody @Valid CreateCategoryApiInput anInput);
+    ResponseEntity<?> createCategory(@RequestBody @Valid CreateCategoryRequest anInput);
 
     @GetMapping
     @Operation(summary = "List all categories paginated")
@@ -38,12 +39,12 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "A invalid parameter was received"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    Pagination<?> listCategories(
+    Pagination<CategoryListResponse> listCategories(
             @RequestParam(name = "search", required = false, defaultValue = "") final String search,
             @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
             @RequestParam(name = "perPage", required = false, defaultValue = "0") final int perPage,
-            @RequestParam(name = "sort", required = false, defaultValue = "name") final int sort,
-            @RequestParam(name = "dir", required = false, defaultValue = "asc") final int dir
+            @RequestParam(name = "sort", required = false, defaultValue = "name") final String sort,
+            @RequestParam(name = "dir", required = false, defaultValue = "asc") final String dir
     );
 
     @GetMapping(
@@ -56,7 +57,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404", description = "Category was not found"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    CategoryApiOutput getById(@PathVariable(name = "id") final String id);
+    CategoryResponse getById(@PathVariable(name = "id") final String id);
 
     @PutMapping(
             path = "{id}",
@@ -68,7 +69,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404", description = "Category was not found"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    ResponseEntity<?> updateById(@PathVariable(name = "id") final String id, @RequestBody UpdateCategoryApiInput anInput);
+    ResponseEntity<?> updateById(@PathVariable(name = "id") final String id, @RequestBody UpdateCategoryRequest anInput);
 
     @DeleteMapping(
             path = "{id}",
