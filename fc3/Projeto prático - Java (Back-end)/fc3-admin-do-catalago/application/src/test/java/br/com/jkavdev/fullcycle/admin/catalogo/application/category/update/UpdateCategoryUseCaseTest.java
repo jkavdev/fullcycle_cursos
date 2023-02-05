@@ -3,7 +3,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.application.category.update;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ public class UpdateCategoryUseCaseTest {
 //    4 - teste simulando um erro generico vindo do gateway
 //    5 - teste atualizar categoria passando id invalido
 
-//    TODO: teste esta incerto, uma vez roda ok, se rodar novamente, quebra kkkk
+    //    TODO: teste esta incerto, uma vez roda ok, se rodar novamente, quebra kkkk
     @Test
     public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId() {
         final var aCategory =
@@ -148,7 +148,7 @@ public class UpdateCategoryUseCaseTest {
 
         Mockito.verify(categoryGateway, times(1)).findById(eq(expectedId));
 
-         Mockito.verify(categoryGateway, times(1)).update(argThat(
+        Mockito.verify(categoryGateway, times(1)).update(argThat(
                 anUpdatedCategory -> {
                     return
                             Objects.equals(expectedName, anUpdatedCategory.getName())
@@ -203,7 +203,6 @@ public class UpdateCategoryUseCaseTest {
         final var expectedDescription = "Categoria de filmes";
         final var expectedIsActive = false;
         final var expectedId = "123";
-        final var expectedErrorCount = 1;
         final var expectedErrorMessage = "Category with ID 123 was not found";
 
         final var aCommand = UpdateCategoryCommand.with(
@@ -217,10 +216,9 @@ public class UpdateCategoryUseCaseTest {
                 .thenReturn(Optional.empty());
 
         final var actualException =
-                Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+                Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(aCommand));
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
         Mockito.verify(categoryGateway, times(1)).findById(eq(CategoryID.from(expectedId)));
 
