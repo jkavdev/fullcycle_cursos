@@ -22,7 +22,6 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
         this.categoryGateway = Objects.requireNonNull(categoryGateway);
     }
 
-
     @Override
     public Either<Notification, UpdateCategoryOutput> execute(final UpdateCategoryCommand aCommand) {
         final var anId = CategoryID.from(aCommand.id());
@@ -39,7 +38,7 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
                 .update(aName, aDescription, isActive)
                 .validate(notification);
 
-        return notification.hasErrors() ? Left(notification) : update(aCategory);
+        return notification.hasError() ? Left(notification) : update(aCategory);
     }
 
     private static Supplier<DomainException> notFound(final CategoryID anId) {

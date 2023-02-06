@@ -3,12 +3,12 @@ package br.com.jkavdev.fullcycle.admin.catalogo.application.category.create;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
-import io.vavr.API;
 import io.vavr.control.Either;
 
 import java.util.Objects;
 
 import static io.vavr.API.Left;
+import static io.vavr.API.Try;
 
 public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase {
 
@@ -17,7 +17,6 @@ public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase {
     public DefaultCreateCategoryUseCase(final CategoryGateway categoryGateway) {
         this.categoryGateway = Objects.requireNonNull(categoryGateway);
     }
-
 
     @Override
     public Either<Notification, CreateCategoryOutput> execute(final CreateCategoryCommand aCommand) {
@@ -30,11 +29,11 @@ public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase {
         final var aCategory = Category.newCategory(aName, aDescription, isActive);
         aCategory.validate(notification);
 
-        return notification.hasErrors() ? Left(notification) : create(aCategory);
+        return notification.hasError() ? Left(notification) : create(aCategory);
     }
 
     private Either<Notification, CreateCategoryOutput> create(final Category aCategory) {
-        return API.Try(() -> this.categoryGateway.create(aCategory))
+        return Try(() -> this.categoryGateway.create(aCategory))
                 .toEither()
                 .bimap(Notification::create, CreateCategoryOutput::from);
     }

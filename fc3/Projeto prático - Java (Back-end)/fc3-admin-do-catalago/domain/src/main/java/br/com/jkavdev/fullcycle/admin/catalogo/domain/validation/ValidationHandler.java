@@ -13,10 +13,10 @@ public interface ValidationHandler {
     List<Error> getErrors();
 
     default Error firstError() {
-        return hasErrors() ? getErrors().get(0) : null;
+        return hasError() ? getErrors().get(0) : null;
     }
 
-    default boolean hasErrors() {
+    default boolean hasError() {
         return getErrors() != null && !getErrors().isEmpty();
     }
 
