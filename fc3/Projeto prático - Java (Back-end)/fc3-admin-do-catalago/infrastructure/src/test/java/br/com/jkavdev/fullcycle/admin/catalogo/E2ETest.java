@@ -7,16 +7,12 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.*;
 
-// indicando que sera usada nas classes de testes
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-// definindo profile de teste
-@ActiveProfiles("integration")
-// para testes integrados precisamos do spring com todo o seu contexto
+@ActiveProfiles("test-e2e")
 @SpringBootTest(classes = WebServerConfig.class)
-// vinculando a extension para a limpeza de dados a cada teste com o jupiter
 @ExtendWith(MySQLCleanUpExtension.class)
-public @interface IntegrationTest {
+public @interface E2ETest {
 
 }
