@@ -14,7 +14,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
 
     private String description;
 
-    private boolean isActive;
+    private boolean active;
 
     private Instant createdAt;
 
@@ -35,13 +35,13 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         this.id = anId;
         this.name = aName;
         this.description = aDescription;
-        this.isActive = isActive;
+        this.active = isActive;
         this.createdAt = Objects.requireNonNull(aCreatedAt, "'createdAt' should not be null");
         this.updatedAt = Objects.requireNonNull(aUpdatedAt, "'updatedAt' should not be null");
         this.deletedAt = aDeletedAt;
     }
 
-    public static Category newCategory(String name, String description, boolean isActive) {
+    public static Category newCategory(final String name, final String description, final boolean isActive) {
         final var id = CategoryID.unique();
         final var now = Instant.now();
         final var deletedAt = isActive ? null : now;
@@ -82,7 +82,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
     }
 
     @Override
-    public void validate(ValidationHandler handler) {
+    public void validate(final ValidationHandler handler) {
         new CategoryValidator(this, handler).validate();
     }
 
@@ -91,14 +91,14 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
             this.deletedAt = Instant.now();
         }
 
-        this.isActive = false;
+        this.active = false;
         this.updatedAt = Instant.now();
         return this;
     }
 
     public Category activate() {
         this.deletedAt = null;
-        this.isActive = true;
+        this.active = true;
         this.updatedAt = Instant.now();
         return this;
     }
@@ -116,7 +116,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public Instant getCreatedAt() {
@@ -144,7 +144,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
 
         this.name = aName;
         this.description = aDescription;
-        this.isActive = isActive;
+        this.active = isActive;
         this.updatedAt = Instant.now();
         return this;
     }

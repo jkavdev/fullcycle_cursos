@@ -64,26 +64,26 @@ public class CategoryAPITest {
 
     @Test
     public void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId() throws Exception {
-//        given
+        // given
         final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
 
-        final var anInput =
+        final var aInput =
                 new CreateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
         when(createCategoryUseCase.execute(any()))
                 .thenReturn(Right(CreateCategoryOutput.from("123")));
 
-//        when
+        // when
         final var request = post("/categories")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(anInput));
+                .content(this.mapper.writeValueAsString(aInput));
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/categories/123"))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
@@ -94,89 +94,86 @@ public class CategoryAPITest {
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
-
     }
 
     @Test
     public void givenAInvalidName_whenCallsCreateCategory_thenShouldReturnNotification() throws Exception {
-//      given
-        final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        // given
+        final String expectedName = null;
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-        final var expectedErrorMessage = "'name' should not be null";
+        final var expectedMessage = "'name' should not be null";
 
-        final var anInput =
+        final var aInput =
                 new CreateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
         when(createCategoryUseCase.execute(any()))
-                .thenReturn(Left(Notification.create(new Error(expectedErrorMessage))));
+                .thenReturn(Left(Notification.create(new java.lang.Error(expectedMessage))));
 
-//        when
+        // when
         final var request = post("/categories")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(anInput));
+                .content(this.mapper.writeValueAsString(aInput));
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isUnprocessableEntity())
                 .andExpect(header().string("Location", nullValue()))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.errors", hasSize(1)))
-                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedMessage)));
 
         verify(createCategoryUseCase, times(1)).execute(argThat(cmd ->
                 Objects.equals(expectedName, cmd.name())
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
-
     }
 
     @Test
     public void givenAInvalidCommand_whenCallsCreateCategory_thenShouldReturnDomainException() throws Exception {
-//      given
-        final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        // given
+        final String expectedName = null;
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-        final var expectedErrorMessage = "'name' should not be null";
+        final var expectedMessage = "'name' should not be null";
 
-        final var anInput =
+        final var aInput =
                 new CreateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
         when(createCategoryUseCase.execute(any()))
-                .thenThrow((DomainException.with(new Error(expectedErrorMessage))));
+                .thenThrow(DomainException.with(new Error(expectedMessage)));
 
-//        when
+        // when
         final var request = post("/categories")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(anInput));
+                .content(this.mapper.writeValueAsString(aInput));
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//                then
+        // then
         response.andExpect(status().isUnprocessableEntity())
                 .andExpect(header().string("Location", nullValue()))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)))
                 .andExpect(jsonPath("$.errors", hasSize(1)))
-                .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)))
-                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedMessage)));
 
         verify(createCategoryUseCase, times(1)).execute(argThat(cmd ->
                 Objects.equals(expectedName, cmd.name())
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
-
     }
 
     @Test
     public void givenAValidId_whenCallsGetCategory_shouldReturnCategory() throws Exception {
-//        given
+        // given
         final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
 
         final var aCategory =
@@ -184,16 +181,20 @@ public class CategoryAPITest {
 
         final var expectedId = aCategory.getId().getValue();
 
-        when(getCategoryByIdUseCase.execute(eq(expectedId)))
+        when(getCategoryByIdUseCase.execute(any()))
                 .thenReturn(CategoryOutput.from(aCategory));
 
-//        when
-        final var request = get("/categories/{id}", expectedId);
+        // when
+        final var request = get("/categories/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
+        // then
         response.andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id", equalTo(expectedId)))
                 .andExpect(jsonPath("$.name", equalTo(expectedName)))
                 .andExpect(jsonPath("$.description", equalTo(expectedDescription)))
@@ -206,49 +207,51 @@ public class CategoryAPITest {
     }
 
     @Test
-    public void givenAnInvalidId_whenCallsGetCategory_shouldReturnNotFound() throws Exception {
-//        given
-        final var expectedId = CategoryID.from("123");
+    public void givenAInvalidId_whenCallsGetCategory_shouldReturnNotFound() throws Exception {
+        // given
         final var expectedErrorMessage = "Category with ID 123 was not found";
+        final var expectedId = CategoryID.from("123");
 
         when(getCategoryByIdUseCase.execute(any()))
                 .thenThrow(NotFoundException.with(Category.class, expectedId));
 
-//        when
-        final var request = get("/categories/{id}", expectedId)
+        // when
+        final var request = get("/categories/{id}", expectedId.getValue())
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
     }
 
     @Test
     public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId() throws Exception {
-//        given
-        final var expectedId = "132";
+        // given
+        final var expectedId = "123";
         final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-
-        final var anInput =
-                new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
         when(updateCategoryUseCase.execute(any()))
                 .thenReturn(Right(UpdateCategoryOutput.from(expectedId)));
 
-//        when
+        final var aCommand =
+                new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
+
+        // when
         final var request = put("/categories/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(anInput));
+                .content(mapper.writeValueAsString(aCommand));
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id", equalTo(expectedId)));
@@ -258,17 +261,56 @@ public class CategoryAPITest {
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
-
     }
 
     @Test
-    public void givenAnInvalidID_whenCallsUpdateCategory_shouldReturnNotFoundException() throws Exception {
-//        given
-        final var expectedId = "notfound";
+    public void givenAInvalidName_whenCallsUpdateCategory_thenShouldReturnDomainException() throws Exception {
+        // given
+        final var expectedId = "123";
         final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-        final var expectedErrorMessage = "Category with ID notfound was not found";
+
+        final var expectedErrorCount = 1;
+        final var expectedMessage = "'name' should not be null";
+
+        when(updateCategoryUseCase.execute(any()))
+                .thenReturn(Left(Notification.create(new Error(expectedMessage))));
+
+        final var aCommand =
+                new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
+
+        // when
+        final var request = put("/categories/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(aCommand));
+
+        final var response = this.mvc.perform(request)
+                .andDo(print());
+
+        // then
+        response.andExpect(status().isUnprocessableEntity())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.errors", hasSize(expectedErrorCount)))
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedMessage)));
+
+        verify(updateCategoryUseCase, times(1)).execute(argThat(cmd ->
+                Objects.equals(expectedName, cmd.name())
+                        && Objects.equals(expectedDescription, cmd.description())
+                        && Objects.equals(expectedIsActive, cmd.isActive())
+        ));
+    }
+
+    @Test
+    public void givenACommandWithInvalidID_whenCallsUpdateCategory_shouldReturnNotFoundException() throws Exception {
+        // given
+        final var expectedId = "not-found";
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+
+        final var expectedErrorMessage = "Category with ID not-found was not found";
 
         when(updateCategoryUseCase.execute(any()))
                 .thenThrow(NotFoundException.with(Category.class, CategoryID.from(expectedId)));
@@ -276,15 +318,16 @@ public class CategoryAPITest {
         final var aCommand =
                 new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
-//        when
+        // when
         final var request = put("/categories/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isNotFound())
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
@@ -294,79 +337,40 @@ public class CategoryAPITest {
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
         ));
-
     }
 
     @Test
-    public void givenAnInvalidName_whenCallsUpdateCategory_shouldReturnDomainException() throws Exception {
-//        given
+    public void givenAValidId_whenCallsDeleteCategory_shouldReturnNoContent() throws Exception {
+        // given
         final var expectedId = "123";
-        final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
-        final var expectedIsActive = true;
-
-        final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' should not be null";
-
-        when(updateCategoryUseCase.execute(any()))
-                .thenReturn(Left(Notification.create(new Error(expectedErrorMessage))));
-
-        final var aCommand =
-                new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
-
-//        when
-        final var request = put("/categories/{id}", expectedId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(aCommand));
-
-        final var response = this.mvc.perform(request)
-                .andDo(print());
-
-//        then
-        response.andExpect(status().isUnprocessableEntity())
-                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.errors", hasSize(expectedErrorCount)))
-                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
-
-        verify(updateCategoryUseCase, times(1)).execute(argThat(cmd ->
-                Objects.equals(expectedName, cmd.name())
-                        && Objects.equals(expectedDescription, cmd.description())
-                        && Objects.equals(expectedIsActive, cmd.isActive())
-        ));
-
-    }
-
-    @Test
-    public void givenAValidId_whenCallsDeleteCategory_shouldNoContent() throws Exception {
-//        given
-        final var expectedId = "132";
 
         doNothing()
                 .when(deleteCategoryUseCase).execute(any());
 
-//        when
-        final var request = delete("/categories/{id}", expectedId);
+        // when
+        final var request = delete("/categories/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isNoContent());
 
         verify(deleteCategoryUseCase, times(1)).execute(eq(expectedId));
-
     }
 
     @Test
-    public void givenAValidParams_whenCallListCategories_shouldReturnCategories() throws Exception {
-//        given
+    public void givenValidParams_whenCallsListCategories_shouldReturnCategories() throws Exception {
+        // given
         final var aCategory = Category.newCategory("Movies", null, true);
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "movies";
         final var expectedSort = "description";
-        final var expectedDirection = "asc";
+        final var expectedDirection = "desc";
         final var expectedItemsCount = 1;
         final var expectedTotal = 1;
 
@@ -375,18 +379,20 @@ public class CategoryAPITest {
         when(listCategoriesUseCase.execute(any()))
                 .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
 
-//        when
+        // when
         final var request = get("/categories")
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
-                .queryParam("search", expectedTerms)
                 .queryParam("sort", expectedSort)
-                .queryParam("dir", expectedDirection);
+                .queryParam("dir", expectedDirection)
+                .queryParam("search", expectedTerms)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
 
-//        then
+        // then
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
                 .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
@@ -394,10 +400,10 @@ public class CategoryAPITest {
                 .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
                 .andExpect(jsonPath("$.items[0].id", equalTo(aCategory.getId().getValue())))
                 .andExpect(jsonPath("$.items[0].name", equalTo(aCategory.getName())))
+                .andExpect(jsonPath("$.items[0].description", equalTo(aCategory.getDescription())))
                 .andExpect(jsonPath("$.items[0].is_active", equalTo(aCategory.isActive())))
                 .andExpect(jsonPath("$.items[0].created_at", equalTo(aCategory.getCreatedAt().toString())))
-                .andExpect(jsonPath("$.items[0].deleted_at", equalTo(aCategory.getDeletedAt())))
-        ;
+                .andExpect(jsonPath("$.items[0].deleted_at", equalTo(aCategory.getDeletedAt())));
 
         verify(listCategoriesUseCase, times(1)).execute(argThat(query ->
                 Objects.equals(expectedPage, query.page())

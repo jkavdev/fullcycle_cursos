@@ -1,7 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.ObjectMapperConfig;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
@@ -14,7 +13,6 @@ import java.lang.annotation.*;
 @Inherited
 @ActiveProfiles("test")
 @WebMvcTest
-@ExtendWith(MySQLCleanUpExtension.class)
 @Import(ObjectMapperConfig.class)
 public @interface ControllerTest {
 

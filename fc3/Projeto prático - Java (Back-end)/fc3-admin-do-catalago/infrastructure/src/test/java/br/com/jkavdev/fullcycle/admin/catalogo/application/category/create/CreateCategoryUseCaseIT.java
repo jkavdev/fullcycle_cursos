@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 
 @IntegrationTest
@@ -30,14 +31,14 @@ public class CreateCategoryUseCaseIT {
 
     @Test
     public void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId() {
-
         final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
+        final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
 
-        final var aCommand = CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
-
         Assertions.assertEquals(0, categoryRepository.count());
+
+        final var aCommand =
+                CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
 
         final var actualOutput = useCase.execute(aCommand).get();
 
@@ -110,17 +111,17 @@ public class CreateCategoryUseCaseIT {
     }
 
     @Test
-    public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnAnException() {
-
+    public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnAException() {
         final var expectedName = "Filmes";
-        final var expectedDescription = "Categoria de filmes";
-        final var expectedIsActive = false;
-        final var expectedErrorMessage = "Gateway error";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
         final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "Gateway error";
 
-        final var aCommand = CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
+        final var aCommand =
+                CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
 
-        Mockito.doThrow(new IllegalStateException(expectedErrorMessage))
+        doThrow(new IllegalStateException(expectedErrorMessage))
                 .when(categoryGateway).create(any());
 
         final var notification = useCase.execute(aCommand).getLeft();

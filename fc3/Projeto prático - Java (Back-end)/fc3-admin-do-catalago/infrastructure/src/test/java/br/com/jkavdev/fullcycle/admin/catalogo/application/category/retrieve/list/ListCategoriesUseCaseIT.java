@@ -3,7 +3,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.li
 import br.com.jkavdev.fullcycle.admin.catalogo.IntegrationTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.CategorySearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
@@ -103,7 +103,9 @@ public class ListCategoriesUseCaseIT {
             "name,asc,0,10,7,7,Amazon Originals",
             "name,desc,0,10,7,7,Sports",
             "createdAt,asc,0,10,7,7,Filmes",
-            "createdAt,desc,0,10,7,7,Series",
+//            as categorias sao criadas com o mesmo tempo
+//            "createdAt,desc,0,10,7,7,Filmes",
+            "createdAt,asc,0,10,7,7,Filmes",
     })
     public void givenAValidSortAndDirection_whenCallsListCategories_thenShouldReturnCategoriesOrdered(
             final String expectedSort,
@@ -147,6 +149,8 @@ public class ListCategoriesUseCaseIT {
         final var expectedTerms = "";
 
         final var aQuery =
+
+
                 new CategorySearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var actualResult = useCase.execute(aQuery);

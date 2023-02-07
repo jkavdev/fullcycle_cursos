@@ -1,7 +1,7 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.list;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.CategorySearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 
 import java.util.Objects;

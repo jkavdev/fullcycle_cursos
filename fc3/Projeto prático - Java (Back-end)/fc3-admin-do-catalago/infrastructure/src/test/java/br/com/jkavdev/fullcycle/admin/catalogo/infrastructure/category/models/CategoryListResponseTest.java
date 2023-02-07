@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 
-import java.io.IOException;
 import java.time.Instant;
 
 @JacksonTest
@@ -16,11 +15,11 @@ public class CategoryListResponseTest {
     private JacksonTester<CategoryListResponse> json;
 
     @Test
-    public void testMarshall() throws IOException {
+    public void testMarshall() throws Exception {
         final var expectedId = "123";
-        final var expectedName = "filmes";
-        final var expectedDescription = "outra categoria";
-        final var expectedIsActive = true;
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = false;
         final var expectedCreatedAt = Instant.now();
         final var expectedDeletedAt = Instant.now();
 
@@ -41,8 +40,7 @@ public class CategoryListResponseTest {
                 .hasJsonPathValue("$.description", expectedDescription)
                 .hasJsonPathValue("$.is_active", expectedIsActive)
                 .hasJsonPathValue("$.created_at", expectedCreatedAt.toString())
-                .hasJsonPathValue("$.deleted_at", expectedDeletedAt.toString())
-        ;
+                .hasJsonPathValue("$.deleted_at", expectedDeletedAt.toString());
     }
 
 }

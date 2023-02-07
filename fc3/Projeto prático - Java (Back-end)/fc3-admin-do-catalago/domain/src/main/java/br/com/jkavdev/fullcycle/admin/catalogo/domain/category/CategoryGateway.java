@@ -1,6 +1,5 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 
 import java.util.Optional;

@@ -2,7 +2,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.li
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.CategorySearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
