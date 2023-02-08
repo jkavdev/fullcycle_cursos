@@ -1,7 +1,7 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.genre;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.AggregateRoot;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
@@ -21,7 +21,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     private boolean active;
 
-    private List<Category> categories;
+    private List<CategoryID> categories;
 
     private Instant createdAt;
 
@@ -33,7 +33,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
             final GenreID anId,
             final String aName,
             final boolean isActive,
-            final List<Category> categories,
+            final List<CategoryID> categories,
             final Instant aCreatedAt,
             final Instant aUpdatedAt,
             final Instant aDeletedAt
@@ -48,12 +48,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         this.deletedAt = aDeletedAt;
 
 //        realizando validacao imediata, ao invez da tardia utilizada em categoria
-        final var notification = Notification.create();
-        validate(notification);
-
-        if (notification.hasError()) {
-            throw new NotificationException("failed to create a aggregate genre", notification);
-        }
+        selfValidate();
     }
 
     public static Genre newGenre(final String name, final boolean isActive) {
@@ -68,7 +63,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
             final GenreID anId,
             final String aName,
             final boolean active,
-            final List<Category> categories,
+            final List<CategoryID> categories,
             final Instant createdAt,
             final Instant updatedAt,
             final Instant deletedAt
@@ -130,7 +125,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         return active;
     }
 
-    public List<Category> getCategories() {
+    public List<CategoryID> getCategories() {
         return Collections.unmodifiableList(categories);
     }
 
@@ -148,7 +143,8 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     public Genre update(
             final String aName,
-            final boolean isActive
+            final boolean isActive,
+            final List<CategoryID> categories
     ) {
         if (isActive) {
             activate();
@@ -158,8 +154,19 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
         this.name = aName;
         this.active = isActive;
+        this.categories = new ArrayList<>(categories);
         this.updatedAt = InstantUtils.now();
+        selfValidate();
         return this;
+    }
+
+    private void selfValidate() {
+        final var notification = Notification.create();
+        validate(notification);
+
+        if (notification.hasError()) {
+            throw new NotificationException("failed to create a aggregate genre", notification);
+        }
     }
 
     @Override
