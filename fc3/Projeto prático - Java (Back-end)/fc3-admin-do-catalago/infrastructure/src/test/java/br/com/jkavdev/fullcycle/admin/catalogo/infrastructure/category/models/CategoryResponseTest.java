@@ -1,12 +1,11 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.JacksonTest;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
-
-import java.time.Instant;
 
 @JacksonTest
 public class CategoryResponseTest {
@@ -20,9 +19,9 @@ public class CategoryResponseTest {
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = false;
-        final var expectedCreatedAt = Instant.now();
-        final var expectedUpdatedAt = Instant.now();
-        final var expectedDeletedAt = Instant.now();
+        final var expectedCreatedAt = InstantUtils.now();
+        final var expectedUpdatedAt = InstantUtils.now();
+        final var expectedDeletedAt = InstantUtils.now();
 
         final var response = new CategoryResponse(
                 expectedId,
@@ -52,9 +51,9 @@ public class CategoryResponseTest {
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = false;
-        final var expectedCreatedAt = Instant.now();
-        final var expectedUpdatedAt = Instant.now();
-        final var expectedDeletedAt = Instant.now();
+        final var expectedCreatedAt = InstantUtils.now();
+        final var expectedUpdatedAt = InstantUtils.now();
+        final var expectedDeletedAt = InstantUtils.now();
 
         final var json = """
                 {
@@ -65,7 +64,7 @@ public class CategoryResponseTest {
                   "created_at": "%s",
                   "deleted_at": "%s",
                   "updated_at": "%s"
-                }    
+                }
                 """.formatted(
                 expectedId,
                 expectedName,

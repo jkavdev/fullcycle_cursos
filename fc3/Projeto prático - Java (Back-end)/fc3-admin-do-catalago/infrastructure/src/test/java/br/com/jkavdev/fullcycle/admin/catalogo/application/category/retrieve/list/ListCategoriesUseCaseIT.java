@@ -39,6 +39,17 @@ public class ListCategoriesUseCaseIT {
                         Category.newCategory("Kids", "Categoria para crianças", true),
                         Category.newCategory("Series", null, true)
                 )
+                .map((category) -> {
+                    try {
+                        Thread.sleep(1);
+                    } catch (Exception e) {
+                    }
+                    return Category.newCategory(
+                            category.getName(),
+                            category.getDescription(),
+                            category.isActive()
+                    );
+                })
                 .map(CategoryJpaEntity::from)
                 .toList();
 

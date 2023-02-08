@@ -25,7 +25,7 @@ public class GenreTest {
     }
 
     @Test
-    public void givenInvalidNullName_whenCallNewGenreAndValidate_shouldReceiveAnError () {
+    public void givenInvalidNullName_whenCallNewGenreAndValidate_shouldReceiveAnError() {
         final String expectedName = null;
         final var expectedIsActive = true;
         final var expectedErrorCount = 1;
@@ -39,7 +39,7 @@ public class GenreTest {
     }
 
     @Test
-    public void givenInvalidEmptyName_whenCallNewGenreAndValidate_shouldReceiveAnError () {
+    public void givenInvalidEmptyName_whenCallNewGenreAndValidate_shouldReceiveAnError() {
         final var expectedName = " ";
         final var expectedIsActive = true;
         final var expectedErrorCount = 1;
@@ -53,7 +53,7 @@ public class GenreTest {
     }
 
     @Test
-    public void givenInvalidNameLengthGreaterThan255_whenCallNewGenreAndValidate_shouldReceiveAnError () {
+    public void givenInvalidNameLengthGreaterThan255_whenCallNewGenreAndValidate_shouldReceiveAnError() {
         final var expectedName = """
                 Gostaria de enfatizar que o consenso sobre a necessidade de qualificação auxilia a preparação e a
                 composição das posturas dos órgãos dirigentes com relação às suas atribuições.
@@ -69,6 +69,67 @@ public class GenreTest {
 
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
+    }
+
+    @Test
+    public void givenAnActiveGenre_whenCallDeactivate_shouldReceiveOK() throws InterruptedException {
+        final var expectedName = "Acao";
+        final var expectedIsActive = false;
+        final var expectedCategories = 0;
+
+        final var actualGenre = Genre.newGenre(expectedName, true);
+
+        Assertions.assertNotNull(actualGenre);
+        Assertions.assertTrue(actualGenre.isActive());
+        Assertions.assertNull(actualGenre.getDeletedAt());
+
+        final var actualCreatedAt = actualGenre.getCreatedAt();
+        final var actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(1);
+
+        actualGenre.deactivate();
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size());
+        Assertions.assertNotNull(actualCreatedAt);
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertEquals(actualCreatedAt, actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+    }
+
+    @Test
+    public void givenAnInactiveGenre_whenCallActivate_shouldReceiveOK() throws InterruptedException {
+        final var expectedName = "Acao";
+        final var expectedIsActive = true;
+        final var expectedCategories = 0;
+
+        final var actualGenre = Genre.newGenre(expectedName, false);
+
+        Assertions.assertNotNull(actualGenre);
+        Assertions.assertFalse(actualGenre.isActive());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+
+        final var actualCreatedAt = actualGenre.getCreatedAt();
+        final var actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(1);
+
+        actualGenre.activate();
+
+        Assertions.assertNotNull(actualGenre);
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size());
+        Assertions.assertNotNull(actualCreatedAt);
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertEquals(actualCreatedAt, actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNull(actualGenre.getDeletedAt());
     }
 
 }

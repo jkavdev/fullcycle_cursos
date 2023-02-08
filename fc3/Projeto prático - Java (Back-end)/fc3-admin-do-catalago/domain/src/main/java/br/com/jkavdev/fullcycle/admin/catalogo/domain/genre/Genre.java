@@ -3,6 +3,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.domain.genre;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.AggregateRoot;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 
@@ -57,7 +58,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     public static Genre newGenre(final String name, final boolean isActive) {
         final var id = GenreID.unique();
-        final var now = Instant.now();
+        final var now = InstantUtils.now();
         final var deletedAt = isActive ? null : now;
 
         return new Genre(id, name, isActive, new ArrayList<>(), now, now, deletedAt);
@@ -102,18 +103,18 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     public Genre deactivate() {
         if (getDeletedAt() == null) {
-            this.deletedAt = Instant.now();
+            this.deletedAt = InstantUtils.now();
         }
 
         this.active = false;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
     public Genre activate() {
         this.deletedAt = null;
         this.active = true;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -157,7 +158,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
         this.name = aName;
         this.active = isActive;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
