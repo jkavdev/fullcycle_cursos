@@ -42,7 +42,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         this.id = anId;
         this.name = aName;
         this.active = isActive;
-        this.categories = new ArrayList<>(categories);
+        this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
         this.createdAt = Objects.requireNonNull(aCreatedAt, "'createdAt' should not be null");
         this.updatedAt = Objects.requireNonNull(aUpdatedAt, "'updatedAt' should not be null");
         this.deletedAt = aDeletedAt;
@@ -154,7 +154,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
         this.name = aName;
         this.active = isActive;
-        this.categories = new ArrayList<>(categories);
+        this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
         this.updatedAt = InstantUtils.now();
         selfValidate();
         return this;
@@ -176,5 +176,25 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public Genre addCategory(final CategoryID aCategoryID) {
+        if (aCategoryID == null) {
+            return this;
+        }
+
+        categories.add(aCategoryID);
+        updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre removeCategory(final CategoryID aCategoryID) {
+        if (aCategoryID == null) {
+            return this;
+        }
+
+        categories.remove(aCategoryID);
+        updatedAt = InstantUtils.now();
+        return this;
     }
 }
