@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 @IntegrationTest
 public class ListCategoriesUseCaseIT {
@@ -30,7 +30,7 @@ public class ListCategoriesUseCaseIT {
 
     @BeforeEach
     void mockups() {
-        final var categories = List.of(
+        final var categories = Stream.of(
                         Category.newCategory("Filmes", null, true),
                         Category.newCategory("Netflix Originals", "Títulos de autoria da Netflix", true),
                         Category.newCategory("Amazon Originals", "Títulos de autoria da Amazon Prime", true),
@@ -39,7 +39,8 @@ public class ListCategoriesUseCaseIT {
                         Category.newCategory("Kids", "Categoria para crianças", true),
                         Category.newCategory("Series", null, true)
                 )
-                .stream().map(CategoryJpaEntity::from).toList();
+                .map(CategoryJpaEntity::from)
+                .toList();
 
         categoryRepository.saveAllAndFlush(categories);
     }
@@ -103,9 +104,7 @@ public class ListCategoriesUseCaseIT {
             "name,asc,0,10,7,7,Amazon Originals",
             "name,desc,0,10,7,7,Sports",
             "createdAt,asc,0,10,7,7,Filmes",
-//            as categorias sao criadas com o mesmo tempo
-//            "createdAt,desc,0,10,7,7,Filmes",
-            "createdAt,asc,0,10,7,7,Filmes",
+            "createdAt,desc,0,10,7,7,Series",
     })
     public void givenAValidSortAndDirection_whenCallsListCategories_thenShouldReturnCategoriesOrdered(
             final String expectedSort,

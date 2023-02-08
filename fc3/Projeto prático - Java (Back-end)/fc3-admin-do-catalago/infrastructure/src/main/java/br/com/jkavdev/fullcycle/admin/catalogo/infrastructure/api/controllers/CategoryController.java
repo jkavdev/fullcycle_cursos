@@ -56,7 +56,7 @@ public class CategoryController implements CategoryAPI {
         final var aCommand = CreateCategoryCommand.with(
                 anInput.name(),
                 anInput.description(),
-                anInput.active().booleanValue()
+                anInput.active() != null && anInput.active()
         );
 
         final Function<Notification, ResponseEntity<?>> onError = notification ->
@@ -77,16 +77,16 @@ public class CategoryController implements CategoryAPI {
             final int page,
             final int perPage,
             final String sort,
-            final String dir
+            final String direction
     ) {
         return listCategoriesUseCase.execute(
-                new CategorySearchQuery(page, perPage, search, sort, dir)
-        )
+                        new CategorySearchQuery(page, perPage, search, sort, direction)
+                )
                 .map(CategoryApiPresenter::present);
     }
 
     @Override
-    public CategoryResponse getById(String id) {
+    public CategoryResponse getById(final String id) {
         return CategoryApiPresenter.present(getCategoryByIdUseCase.execute(id));
     }
 
@@ -96,7 +96,7 @@ public class CategoryController implements CategoryAPI {
                 id,
                 anInput.name(),
                 anInput.description(),
-                anInput.active().booleanValue()
+                anInput.active() != null && anInput.active()
         );
 
         final Function<Notification, ResponseEntity<?>> onError = notification ->
@@ -110,8 +110,8 @@ public class CategoryController implements CategoryAPI {
     }
 
     @Override
-    public void deleteById(final String anID) {
-        this.deleteCategoryUseCase.execute(anID);
+    public void deleteById(final String anId) {
+        this.deleteCategoryUseCase.execute(anId);
     }
 
 }
