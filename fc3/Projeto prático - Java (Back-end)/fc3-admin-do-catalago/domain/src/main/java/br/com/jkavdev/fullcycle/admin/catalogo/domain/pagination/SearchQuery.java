@@ -1,6 +1,6 @@
-package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
+package br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination;
 
-public record CategorySearchQuery(
+public record SearchQuery(
         int page,
         int perPage,
         String terms,

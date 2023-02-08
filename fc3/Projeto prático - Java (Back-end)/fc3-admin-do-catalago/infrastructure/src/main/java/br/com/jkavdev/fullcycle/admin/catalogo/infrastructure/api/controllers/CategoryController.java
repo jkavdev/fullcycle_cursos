@@ -9,7 +9,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.lis
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryUseCase;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategorySearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
@@ -80,7 +80,7 @@ public class CategoryController implements CategoryAPI {
             final String direction
     ) {
         return listCategoriesUseCase.execute(
-                        new CategorySearchQuery(page, perPage, search, sort, direction)
+                        new SearchQuery(page, perPage, search, sort, direction)
                 )
                 .map(CategoryApiPresenter::present);
     }

@@ -16,7 +16,7 @@ public class CategoryListResponseTest {
     @Test
     public void testMarshall() throws Exception {
         final var expectedId = "123";
-        final var expectedName = "Filmes";
+        final var expectedName = "Filmes"; 
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = false;
         final var expectedCreatedAt = InstantUtils.now();
