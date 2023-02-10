@@ -1,5 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
@@ -7,11 +8,9 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.Genre;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,8 +21,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class UpdateGenreUseCaseTest {
+public class UpdateGenreUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;
@@ -33,6 +31,11 @@ public class UpdateGenreUseCaseTest {
 
     @Mock
     private GenreGateway genreGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway, genreGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() {
@@ -196,8 +199,9 @@ public class UpdateGenreUseCaseTest {
                 .thenReturn(Optional.of(Genre.with(aGenre)));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () ->
-                useCase.execute(aCommand));
+        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
+            useCase.execute(aCommand);
+        });
 
         // then
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
@@ -206,6 +210,7 @@ public class UpdateGenreUseCaseTest {
         Mockito.verify(genreGateway, times(1)).findById(eq(expectedId));
 
         Mockito.verify(categoryGateway, times(0)).existsByIds(any());
+
         Mockito.verify(genreGateway, times(0)).update(any());
     }
 
@@ -241,8 +246,9 @@ public class UpdateGenreUseCaseTest {
                 .thenReturn(List.of(filmes));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () ->
-                useCase.execute(aCommand));
+        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
+            useCase.execute(aCommand);
+        });
 
         // then
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
@@ -252,6 +258,7 @@ public class UpdateGenreUseCaseTest {
         Mockito.verify(genreGateway, times(1)).findById(eq(expectedId));
 
         Mockito.verify(categoryGateway, times(1)).existsByIds(eq(expectedCategories));
+
         Mockito.verify(genreGateway, times(0)).update(any());
     }
 
@@ -260,4 +267,5 @@ public class UpdateGenreUseCaseTest {
                 .map(CategoryID::getValue)
                 .toList();
     }
+
 }

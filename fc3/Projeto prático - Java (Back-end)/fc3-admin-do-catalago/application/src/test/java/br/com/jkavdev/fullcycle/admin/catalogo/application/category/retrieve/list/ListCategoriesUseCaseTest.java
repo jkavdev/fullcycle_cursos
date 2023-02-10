@@ -1,29 +1,32 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.list;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class ListCategoriesUseCaseTest {
+public class ListCategoriesUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultListCategoriesUseCase useCase;
 
     @Mock
     private CategoryGateway categoryGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
 //    1 - teste do caminho feliz
 //    2 - teste buscando uma lista vazia
