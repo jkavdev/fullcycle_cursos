@@ -67,7 +67,7 @@ public class GenreTest {
                 """;
         final var expectedIsActive = true;
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' must be between 3 and 255 characters";
+        final var expectedErrorMessage = "'name' must be between 1 and 255 characters";
 
         final var actualException = Assertions.assertThrows(DomainException.class, () ->
                 Genre.newGenre(expectedName, expectedIsActive));
@@ -366,7 +366,7 @@ public class GenreTest {
     }
 
     @Test
-    public void givenAValidEmptyCategoriesGenre_whenCallsAddCategories_shouldReceiveOk() {
+    public void givenAValidEmptyCategoriesGenre_whenCallsAddCategories_shouldReceiveOk() throws InterruptedException {
         final var seriesID = CategoryID.from("123");
         final var moviesID = CategoryID.from("456");
 
@@ -380,6 +380,8 @@ public class GenreTest {
 
         final var actualCreatedAt = actualGenre.getCreatedAt();
         final var actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(1);
 
         actualGenre.addCategories(expectedCategories);
 
