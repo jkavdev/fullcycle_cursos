@@ -56,7 +56,6 @@ public class ListCategoriesUseCaseIT {
         categoryRepository.saveAllAndFlush(categories);
     }
 
-
     @Test
     public void givenAValidTermDoesNotMatchPrepResisted_shouldReturnEmptyPage() {
         final var expectedPage = 0;

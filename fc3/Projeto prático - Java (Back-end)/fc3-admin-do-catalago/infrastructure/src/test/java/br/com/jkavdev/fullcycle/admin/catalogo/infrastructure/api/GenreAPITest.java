@@ -73,7 +73,7 @@ public class GenreAPITest {
     }
 
     @Test
-    public void givenAInvalidName_whenCallsCreateGenre_thenShouldReturnNotification() throws Exception {
+    public void givenAnInvalidName_whenCallsCreateGenre_shouldReturnNotification() throws Exception {
         // given
         final String expectedName = null;
         final var expectedCategories = List.of("123", "456");
@@ -87,11 +87,11 @@ public class GenreAPITest {
                 .thenThrow(new NotificationException("Error", Notification.create(new Error(expectedErrorMessage))));
 
         // when
-        final var request = post("/genres")
+        final var aRequest = post("/genres")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
-        final var response = this.mvc.perform(request)
+        final var response = this.mvc.perform(aRequest)
                 .andDo(print());
 
         // then
@@ -99,7 +99,7 @@ public class GenreAPITest {
                 .andExpect(header().string("Location", nullValue()))
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.errors", hasSize(1)))
-                .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
 
         verify(createGenreUseCase).execute(argThat(cmd ->
                 Objects.equals(expectedName, cmd.name())

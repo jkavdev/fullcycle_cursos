@@ -17,6 +17,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundExcepti
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.Error;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.controllers.CategoryAPI;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ControllerTest
+@ControllerTest(controllers = CategoryAPI.class)
 public class CategoryAPITest {
 
     @Autowired
