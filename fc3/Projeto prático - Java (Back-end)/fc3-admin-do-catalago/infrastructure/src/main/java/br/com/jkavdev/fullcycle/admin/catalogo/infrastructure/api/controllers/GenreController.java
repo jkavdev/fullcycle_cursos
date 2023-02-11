@@ -3,6 +3,8 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.controllers;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.create.CreateGenreCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.create.CreateGenreUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update.UpdateGenreCommand;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.GenreListResponse;
@@ -22,12 +24,15 @@ public class GenreController implements GenreAPI {
 
     final private GetGenreByIdUseCase getGenreByIdUseCase;
 
+    final private UpdateGenreUseCase updateGenreUseCase;
+
     public GenreController(
             final CreateGenreUseCase createGenreUseCase,
-            final GetGenreByIdUseCase getGenreByIdUseCase
-    ) {
+            final GetGenreByIdUseCase getGenreByIdUseCase,
+            final UpdateGenreUseCase updateGenreUseCase) {
         this.createGenreUseCase = Objects.requireNonNull(createGenreUseCase);
         this.getGenreByIdUseCase = Objects.requireNonNull(getGenreByIdUseCase);
+        this.updateGenreUseCase = Objects.requireNonNull(updateGenreUseCase);
     }
 
     @Override
@@ -59,7 +64,14 @@ public class GenreController implements GenreAPI {
 
     @Override
     public ResponseEntity<?> updateById(final String id, final UpdateGenreRequest anInput) {
-        return null;
+        final var aCommand = UpdateGenreCommand.with(
+                id,
+                anInput.name(),
+                anInput.isActive(),
+                anInput.categories()
+        );
+        final var output = updateGenreUseCase.execute(aCommand);
+        return ResponseEntity.ok(output);
     }
 
     @Override
