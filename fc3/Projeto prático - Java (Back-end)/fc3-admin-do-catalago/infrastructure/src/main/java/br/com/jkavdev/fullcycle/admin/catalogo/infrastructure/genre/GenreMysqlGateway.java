@@ -7,6 +7,10 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreJpaEntity;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.utils.SpecificationUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -36,7 +40,8 @@ public class GenreMysqlGateway implements GenreGateway {
 
     @Override
     public Optional<Genre> findById(GenreID anId) {
-        return Optional.empty();
+        return genreRepository.findById(anId.getValue())
+                .map(GenreJpaEntity::toAggregate);
     }
 
     @Override
@@ -46,11 +51,34 @@ public class GenreMysqlGateway implements GenreGateway {
 
     @Override
     public Pagination<Genre> findAll(SearchQuery aQuery) {
-        return null;
+        final var page = PageRequest.of(
+                aQuery.page(),
+                aQuery.perPage(),
+                Sort.by(Sort.Direction.fromString(aQuery.direction()), aQuery.sort())
+        );
+
+        final var specifications = Optional.ofNullable(aQuery.terms())
+                .filter(ter -> !ter.isBlank())
+                .map(this::assembleSpecification)
+                .orElse(null);
+
+        final var pageResult =
+                this.genreRepository.findAll(Specification.where(specifications), page);
+
+        return new Pagination<>(
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.map(GenreJpaEntity::toAggregate).toList()
+        );
     }
 
     private Genre save(Genre aGenre) {
         return this.genreRepository.save(GenreJpaEntity.from(aGenre))
                 .toAggregate();
+    }
+
+    private Specification<GenreJpaEntity> assembleSpecification(final String terms) {
+        return SpecificationUtils.like("name", terms);
     }
 }
