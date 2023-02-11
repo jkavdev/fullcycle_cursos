@@ -5,16 +5,25 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreJpaEntity;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
 public class GenreMysqlGateway implements GenreGateway {
 
+    final private GenreRepository genreRepository;
+
+    public GenreMysqlGateway(final GenreRepository genreRepository) {
+        this.genreRepository = Objects.requireNonNull(genreRepository);
+    }
+
     @Override
-    public Genre create(Genre aGenre) {
-        return null;
+    public Genre create(final Genre aGenre) {
+        return save(aGenre);
     }
 
     @Override
@@ -35,5 +44,10 @@ public class GenreMysqlGateway implements GenreGateway {
     @Override
     public Pagination<Genre> findAll(SearchQuery aQuery) {
         return null;
+    }
+
+    private Genre save(Genre aGenre) {
+        return this.genreRepository.save(GenreJpaEntity.from(aGenre))
+                .toAggregate();
     }
 }

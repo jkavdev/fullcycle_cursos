@@ -9,7 +9,6 @@ import java.util.Objects;
 @Table(name = "genres_categories")
 public class GenreCategoryJpaEntity {
 
-    @Id
     @EmbeddedId
     private GenreCategoryID id;
 
@@ -17,12 +16,11 @@ public class GenreCategoryJpaEntity {
     @MapsId("genreId")
     private GenreJpaEntity genre;
 
-    public GenreCategoryJpaEntity() {
-    }
+    public GenreCategoryJpaEntity() {}
 
     private GenreCategoryJpaEntity(final GenreJpaEntity aGenre, final CategoryID aCategoryId) {
         this.id = GenreCategoryID.from(aGenre.getId(), aCategoryId.getValue());
-        this.genre = genre;
+        this.genre = aGenre;
     }
 
     public static GenreCategoryJpaEntity from(final GenreJpaEntity aGenre, final CategoryID aCategoryId) {
