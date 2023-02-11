@@ -6,7 +6,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.Validator;
 
 public class GenreValidator extends Validator {
 
-    public static final int NAME_MIN_LENGTH = 3;
+    public static final int NAME_MIN_LENGTH = 1;
     public static final int NAME_MAX_LENGTH = 255;
     private final Genre genre;
 
@@ -34,7 +34,7 @@ public class GenreValidator extends Validator {
 
         final var nameLength = name.trim().length();
         if (nameLength < NAME_MIN_LENGTH || nameLength > NAME_MAX_LENGTH) {
-            this.validationHandler().append(new Error("'name' must be between 3 and 255 characters"));
+            this.validationHandler().append(new Error("'name' must be between 1 and 255 characters"));
         }
     }
 }
