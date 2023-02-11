@@ -17,14 +17,14 @@ import java.lang.annotation.*;
 // configurando apenas o contexto jpa do spring
 @DataJpaTest
 // escaneando apenas os beans jpa
-@ComponentScan(includeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MysqlGateway]")
-})
+@ComponentScan(
+        basePackages = "br.com.jkavdev.fullcycle.admin.catalogo",
+        includeFilters = {
+                @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MysqlGateway]")
+        }
+)
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter
 @ExtendWith(MySQLCleanUpExtension.class)
 public @interface MysqlGatewayTest {
 
 }
-
-
-
