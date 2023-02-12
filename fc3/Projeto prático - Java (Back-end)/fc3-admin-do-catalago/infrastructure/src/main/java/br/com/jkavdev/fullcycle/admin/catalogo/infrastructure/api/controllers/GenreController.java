@@ -2,6 +2,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.controllers;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.create.CreateGenreCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.create.CreateGenreUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.delete.DeleteGenreUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.retrieve.get.GetGenreByIdUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update.UpdateGenreCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update.UpdateGenreUseCase;
@@ -26,13 +27,18 @@ public class GenreController implements GenreAPI {
 
     final private UpdateGenreUseCase updateGenreUseCase;
 
+    final private DeleteGenreUseCase deleteGenreUseCase;
+
     public GenreController(
             final CreateGenreUseCase createGenreUseCase,
             final GetGenreByIdUseCase getGenreByIdUseCase,
-            final UpdateGenreUseCase updateGenreUseCase) {
+            final UpdateGenreUseCase updateGenreUseCase,
+            final DeleteGenreUseCase deleteGenreUseCase
+    ) {
         this.createGenreUseCase = Objects.requireNonNull(createGenreUseCase);
         this.getGenreByIdUseCase = Objects.requireNonNull(getGenreByIdUseCase);
         this.updateGenreUseCase = Objects.requireNonNull(updateGenreUseCase);
+        this.deleteGenreUseCase = Objects.requireNonNull(deleteGenreUseCase);
     }
 
     @Override
@@ -76,6 +82,6 @@ public class GenreController implements GenreAPI {
 
     @Override
     public void deleteById(final String id) {
-
+        this.deleteGenreUseCase.execute(id);
     }
 }
