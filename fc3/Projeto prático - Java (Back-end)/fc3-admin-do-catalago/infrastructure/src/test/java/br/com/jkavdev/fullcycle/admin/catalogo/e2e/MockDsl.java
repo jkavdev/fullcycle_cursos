@@ -30,6 +30,18 @@ public interface MockDsl {
         return GenreID.from(this.give("/genres", aRequestBody));
     }
 
+    default ResultActions listGenres(final int page, final int perPage) throws Exception {
+        return this.listGenres(page, perPage, "", "", "");
+    }
+
+    default ResultActions listGenres(final int page, final int perPage, final String search) throws Exception {
+        return this.listGenres(page, perPage, search, "", "");
+    }
+
+    default ResultActions listGenres(final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
+        return list("/categories", page, perPage, search, sort, direction);
+    }
+
     default CategoryID givenACategory(final String aName, final String aDescription, final boolean isActive) throws Exception {
         final var aRequestBody = new CreateCategoryRequest(aName, aDescription, isActive);
 
@@ -56,13 +68,7 @@ public interface MockDsl {
         return this.listCategories(page, perPage, search, "", "");
     }
 
-    default ResultActions listCategories(
-            final int page,
-            final int perPage,
-            final String search,
-            final String sort,
-            final String direction
-    ) throws Exception {
+    default ResultActions listCategories(final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
         return list("/categories", page, perPage, search, sort, direction);
     }
 
@@ -79,30 +85,20 @@ public interface MockDsl {
 
         String actualId = this.mvc().perform(aRequest)
                 .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse().getHeader("Location")
-                .replace("%s/".formatted(url), "");
+                .andReturn().getResponse()
+                .getHeader("Location").replace("%s/".formatted(url), "");
 
         return actualId;
     }
 
-    private ResultActions list(
-            final String url,
-            final int page,
-            final int perPage,
-            final String search,
-            final String sort,
-            final String direction
-    ) throws Exception {
-        final var aRequest = get(url)
-                .queryParam("page", String.valueOf(page))
+    private ResultActions list(final String url, final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
+        final var aRequest = get(url).queryParam("page", String.valueOf(page))
                 .queryParam("perPage", String.valueOf(perPage))
                 .queryParam("sort", sort)
                 .queryParam("dir", direction)
                 .queryParam("search", search);
 
-        return this.mvc().perform(aRequest)
-                .andDo(print());
+        return this.mvc().perform(aRequest).andDo(print());
     }
 
     private <T> T retrieve(final String url, final Identifier anId, final Class<T> clazz) throws Exception {
@@ -111,8 +107,7 @@ public interface MockDsl {
         final var json = this.mvc().perform(aRequest)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn()
-                .getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString();
 
         return Json.readValue(json, clazz);
     }
