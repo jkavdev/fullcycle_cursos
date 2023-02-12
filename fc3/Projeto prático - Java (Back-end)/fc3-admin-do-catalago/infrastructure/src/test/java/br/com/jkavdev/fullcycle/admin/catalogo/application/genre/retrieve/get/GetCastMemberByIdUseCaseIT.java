@@ -1,6 +1,8 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.genre.retrieve.get;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
+import br.com.jkavdev.fullcycle.admin.catalogo.IntegrationTest;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.Genre;
@@ -8,48 +10,42 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
+@IntegrationTest
+public class GetCastMemberByIdUseCaseIT {
 
-public class GetGenreByIdUseCaseTest extends UseCaseTest {
+    @Autowired
+    private GetGenreByIdUseCase useCase;
 
-    @InjectMocks
-    private DefaultGetGenreByIdUseCase useCase;
+    @Autowired
+    private CategoryGateway categoryGateway;
 
-    @Mock
+    @Autowired
     private GenreGateway genreGateway;
-
-    @Override
-    protected List<Object> getMocks() {
-        return List.of(genreGateway);
-    }
 
     @Test
     public void givenAValidId_whenCallsGetGenre_shouldReturnGenre() {
         // given
+        final var series =
+                categoryGateway.create(Category.newCategory("Séries", null, true));
+
+        final var filmes =
+                categoryGateway.create(Category.newCategory("Filmes", null, true));
+
         final var expectedName = "Ação";
         final var expectedIsActive = true;
-        final var expectedCategories = List.of(
-                CategoryID.from("123"),
-                CategoryID.from("456")
-        );
+        final var expectedCategories = List.of(series.getId(), filmes.getId());
 
-        final var aGenre = Genre.newGenre(expectedName, expectedIsActive)
-                .addCategories(expectedCategories);
+        final var aGenre = genreGateway.create(
+                Genre.newGenre(expectedName, expectedIsActive)
+                        .addCategories(expectedCategories)
+        );
 
         final var expectedId = aGenre.getId();
 
-        when(genreGateway.findById(any()))
-                .thenReturn(Optional.of(aGenre));
         // when
         final var actualGenre = useCase.execute(expectedId.getValue());
 
@@ -57,12 +53,13 @@ public class GetGenreByIdUseCaseTest extends UseCaseTest {
         Assertions.assertEquals(expectedId.getValue(), actualGenre.id());
         Assertions.assertEquals(expectedName, actualGenre.name());
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
-        Assertions.assertEquals(asString(expectedCategories), actualGenre.categories());
+        Assertions.assertTrue(
+                expectedCategories.size() == actualGenre.categories().size()
+                        && asString(expectedCategories).containsAll(actualGenre.categories())
+        );
         Assertions.assertEquals(aGenre.getCreatedAt(), actualGenre.createdAt());
         Assertions.assertEquals(aGenre.getUpdatedAt(), actualGenre.updatedAt());
         Assertions.assertEquals(aGenre.getDeletedAt(), actualGenre.deletedAt());
-
-        Mockito.verify(genreGateway, times(1)).findById(eq(expectedId));
     }
 
     @Test
@@ -72,12 +69,10 @@ public class GetGenreByIdUseCaseTest extends UseCaseTest {
 
         final var expectedId = GenreID.from("123");
 
-        when(genreGateway.findById(eq(expectedId)))
-                .thenReturn(Optional.empty());
-
         // when
-        final var actualException = Assertions.assertThrows(NotFoundException.class, () ->
-                useCase.execute(expectedId.getValue()));
+        final var actualException = Assertions.assertThrows(NotFoundException.class, () -> {
+            useCase.execute(expectedId.getValue());
+        });
 
         // then
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
@@ -88,5 +83,4 @@ public class GetGenreByIdUseCaseTest extends UseCaseTest {
                 .map(CategoryID::getValue)
                 .toList();
     }
-
 }
