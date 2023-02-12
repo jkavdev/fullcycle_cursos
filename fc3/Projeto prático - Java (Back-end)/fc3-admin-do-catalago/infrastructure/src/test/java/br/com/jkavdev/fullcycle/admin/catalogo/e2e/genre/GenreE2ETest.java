@@ -2,15 +2,11 @@ package br.com.jkavdev.fullcycle.admin.catalogo.e2e.genre;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.E2ETest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.Json;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
+import br.com.jkavdev.fullcycle.admin.catalogo.e2e.MockDsl;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,14 +15,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
-import java.util.function.Function;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @E2ETest
 @Testcontainers
-public class GenreE2ETest {
+public class GenreE2ETest implements MockDsl {
 
     @Autowired
     private MockMvc mvc;
@@ -43,6 +35,11 @@ public class GenreE2ETest {
     @DynamicPropertySource
     public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("mysql.port", () -> MYSQL_CONTAINER.getMappedPort(3306));
+    }
+
+    @Override
+    public MockMvc mvc() {
+        return this.mvc;
     }
 
     @Test
@@ -93,44 +90,6 @@ public class GenreE2ETest {
         Assertions.assertNotNull(actualGenre.getCreatedAt());
         Assertions.assertNotNull(actualGenre.getUpdatedAt());
         Assertions.assertNull(actualGenre.getDeletedAt());
-    }
-
-    private GenreID givenAGenre(final String aName, final boolean isActive, final List<CategoryID> categories) throws Exception {
-        final var aRequestBody = new CreateGenreRequest(aName, mapTo(categories, CategoryID::getValue), isActive);
-
-        final var aRequest = post("/genres")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Json.writeValueAsString(aRequestBody));
-
-        return GenreID.from(this.mvc.perform(aRequest)
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse().getHeader("Location")
-                .replace("/genres/", ""));
-    }
-
-    private CategoryID givenACategory(
-            final String aName,
-            final String aDescription,
-            final boolean isActive
-    ) throws Exception {
-        final var aRequestBody = new CreateCategoryRequest(aName, aDescription, isActive);
-
-        final var aRequest = post("/categories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Json.writeValueAsString(aRequestBody));
-
-        return CategoryID.from(this.mvc.perform(aRequest)
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse().getHeader("Location")
-                .replace("/categories/", ""));
-    }
-
-    private <A, D> List<D> mapTo(final List<A> actual, final Function<A, D> mapper) {
-        return actual.stream()
-                .map(mapper)
-                .toList();
     }
 
 }

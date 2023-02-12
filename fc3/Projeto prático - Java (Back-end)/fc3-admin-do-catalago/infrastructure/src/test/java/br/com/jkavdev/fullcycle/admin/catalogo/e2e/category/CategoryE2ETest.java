@@ -1,9 +1,8 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.e2e.category;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.E2ETest;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
+import br.com.jkavdev.fullcycle.admin.catalogo.e2e.MockDsl;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.Json;
@@ -22,14 +21,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 @E2ETest
 @Testcontainers
-public class CategoryE2ETest {
+public class CategoryE2ETest implements MockDsl {
 
     @Autowired
     private MockMvc mvc;
@@ -46,6 +44,11 @@ public class CategoryE2ETest {
     @DynamicPropertySource
     public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
         registry.add("mysql.port", () -> MYSQL_CONTAINER.getMappedPort(3306));
+    }
+
+    @Override
+    public MockMvc mvc() {
+        return this.mvc;
     }
 
     @Test
@@ -290,24 +293,6 @@ public class CategoryE2ETest {
         Assertions.assertFalse(this.categoryRepository.existsById(actualId.getValue()));
     }
 
-    private CategoryID givenACategory(
-            final String aName,
-            final String aDescription,
-            final boolean isActive
-    ) throws Exception {
-        final var aRequestBody = new CreateCategoryRequest(aName, aDescription, isActive);
-
-        final var aRequest = post("/categories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Json.writeValueAsString(aRequestBody));
-
-        return CategoryID.from(this.mvc.perform(aRequest)
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse().getHeader("Location")
-                .replace("/categories/", ""));
-    }
-
     private CategoryResponse retrieveACategory(final String anId) throws Exception {
         final var aRequest = get("/categories/" + anId);
 
@@ -342,7 +327,7 @@ public class CategoryE2ETest {
                 .queryParam("dir", direction)
                 .queryParam("search", search);
 
-        return  this.mvc.perform(aRequest)
+        return this.mvc.perform(aRequest)
                 .andDo(print());
     }
 
