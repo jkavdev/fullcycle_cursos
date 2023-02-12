@@ -9,6 +9,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.Up
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.Json;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.GenreResponse;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.UpdateGenreRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,6 +36,10 @@ public interface MockDsl {
         return this.retrieve("/genres/", anId, GenreResponse.class);
     }
 
+    default ResultActions updateAGenre(final Identifier anId, UpdateGenreRequest body) throws Exception {
+        return this.update("/genres/", anId, body);
+    }
+
     default ResultActions listGenres(final int page, final int perPage) throws Exception {
         return this.listGenres(page, perPage, "", "", "");
     }
@@ -44,7 +49,7 @@ public interface MockDsl {
     }
 
     default ResultActions listGenres(final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
-        return list("/categories", page, perPage, search, sort, direction);
+        return this.list("/genres", page, perPage, search, sort, direction);
     }
 
     default CategoryID givenACategory(final String aName, final String aDescription, final boolean isActive) throws Exception {
@@ -90,8 +95,9 @@ public interface MockDsl {
 
         String actualId = this.mvc().perform(aRequest)
                 .andExpect(status().isCreated())
-                .andReturn().getResponse()
-                .getHeader("Location").replace("%s/".formatted(url), "");
+                .andReturn()
+                .getResponse().getHeader("Location")
+                .replace("%s/".formatted(url), "");
 
         return actualId;
     }
