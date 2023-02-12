@@ -17,7 +17,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import java.util.stream.Stream;
 
 @IntegrationTest
-public class ListCategoriesUseCaseIT {
+public class ListCastMembersUseCaseIT {
 
     @Autowired
     private ListCategoriesUseCase useCase;
