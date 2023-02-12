@@ -8,6 +8,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.Cr
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.Json;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.GenreResponse;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,7 +28,11 @@ public interface MockDsl {
     default GenreID givenAGenre(final String aName, final boolean isActive, final List<CategoryID> categories) throws Exception {
         final var aRequestBody = new CreateGenreRequest(aName, mapTo(categories, CategoryID::getValue), isActive);
 
-        return GenreID.from(this.give("/genres", aRequestBody));
+        return GenreID.from(this.given("/genres", aRequestBody));
+    }
+
+    default GenreResponse retrieveAGenre(final Identifier anId) throws Exception {
+        return this.retrieve("/genres/", anId, GenreResponse.class);
     }
 
     default ResultActions listGenres(final int page, final int perPage) throws Exception {
@@ -45,7 +50,7 @@ public interface MockDsl {
     default CategoryID givenACategory(final String aName, final String aDescription, final boolean isActive) throws Exception {
         final var aRequestBody = new CreateCategoryRequest(aName, aDescription, isActive);
 
-        return CategoryID.from(this.give("/categories", aRequestBody));
+        return CategoryID.from(this.given("/categories", aRequestBody));
     }
 
     default CategoryResponse retrieveACategory(final Identifier anId) throws Exception {
@@ -78,7 +83,7 @@ public interface MockDsl {
                 .toList();
     }
 
-    private String give(final String url, final Object body) throws Exception {
+    private String given(final String url, final Object body) throws Exception {
         final var aRequest = post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Json.writeValueAsString(body));
@@ -92,17 +97,21 @@ public interface MockDsl {
     }
 
     private ResultActions list(final String url, final int page, final int perPage, final String search, final String sort, final String direction) throws Exception {
-        final var aRequest = get(url).queryParam("page", String.valueOf(page))
+        final var aRequest = get(url)
+                .queryParam("page", String.valueOf(page))
                 .queryParam("perPage", String.valueOf(perPage))
                 .queryParam("sort", sort)
                 .queryParam("dir", direction)
                 .queryParam("search", search);
 
-        return this.mvc().perform(aRequest).andDo(print());
+        return this.mvc().perform(aRequest)
+                .andDo(print());
     }
 
     private <T> T retrieve(final String url, final Identifier anId, final Class<T> clazz) throws Exception {
-        final var aRequest = get(url + anId.getValue());
+        final var aRequest = get(url + anId.getValue())
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
 
         final var json = this.mvc().perform(aRequest)
                 .andDo(print())
