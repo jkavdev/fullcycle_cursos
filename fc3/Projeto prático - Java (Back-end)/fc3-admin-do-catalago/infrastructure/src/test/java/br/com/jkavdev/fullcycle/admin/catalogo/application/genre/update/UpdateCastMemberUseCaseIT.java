@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
 @IntegrationTest
-public class UpdateGenreUseCaseIT {
+public class UpdateCastMemberUseCaseIT {
 
     @Autowired
     private UpdateGenreUseCase useCase;
