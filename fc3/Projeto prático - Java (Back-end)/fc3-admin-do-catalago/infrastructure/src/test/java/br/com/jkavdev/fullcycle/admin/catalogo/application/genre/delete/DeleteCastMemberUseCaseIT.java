@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class DeleteGenreUseCaseIT {
+public class DeleteCastMemberUseCaseIT {
 
     @Autowired
     private DeleteGenreUseCase useCase;

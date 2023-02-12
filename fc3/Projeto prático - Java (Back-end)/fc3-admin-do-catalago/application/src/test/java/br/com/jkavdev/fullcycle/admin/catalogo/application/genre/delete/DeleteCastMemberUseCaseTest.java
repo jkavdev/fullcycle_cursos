@@ -15,7 +15,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class DeleteGenreUseCaseTest extends UseCaseTest {
+public class DeleteCastMemberUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultDeleteGenreUseCase useCase;
