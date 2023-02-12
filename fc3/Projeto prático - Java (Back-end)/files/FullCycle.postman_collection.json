@@ -10,81 +10,306 @@
 			"name": "fc3-admin-do-catalogo",
 			"item": [
 				{
-					"name": "search categories",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/categories",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"categories"
-							],
-							"query": [
-								{
-									"key": "perPage",
-									"value": "10",
-									"disabled": true
+					"name": "categories",
+					"item": [
+						{
+							"name": "search categories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/categories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"categories"
+									],
+									"query": [
+										{
+											"key": "perPage",
+											"value": "10",
+											"disabled": true
+										}
+									]
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create a category",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Documetarsios\",\r\n    \"description\": \"categoria de documentasrios\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/api/categories",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"categories"
-							]
+						{
+							"name": "remove a category",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/categories/:categoryId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"categories",
+										":categoryId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": "443f508f-c52a-4406-a291-82b1d8f41cc3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a category",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Banidos\",\r\n    \"is_active\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/categories/:categoryId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"categories",
+										":categoryId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": "7cf89737-c06e-416e-b176-f029ac6d9a7e"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a category",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Documetarsios\",\r\n    \"description\": \"categoria de documentasrios\",\r\n    \"is_active\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/categories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "retrieve a category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/categories/:categoryId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"categories",
+										":categoryId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": "914e2926-c765-4ec3-9348-9606e8b89210"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "retrieve a category",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/categories/914e2926-c765-4ec3-9348-9606e8b89210",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"categories",
-								"914e2926-c765-4ec3-9348-9606e8b89210"
-							]
+					"name": "genres",
+					"item": [
+						{
+							"name": "search genres",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/genres",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"genres"
+									],
+									"query": [
+										{
+											"key": "perPage",
+											"value": "10",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a genre",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Banidos\",\r\n    \"is_active\": \"true\",\r\n    \"categories_id\": [\r\n        \"108b24d9-2a92-41ec-bfbf-6021258f1bc1\",\r\n        \"532b6264-8cc8-4d23-bd0b-6d82a93fc253\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/genres",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"genres"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "retrieve a genre",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/genres/:genreId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"genres",
+										":genreId"
+									],
+									"variable": [
+										{
+											"key": "genreId",
+											"value": "bd6b3075-f0fd-4bf1-a13d-9aa630f73e1a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove a genre",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/genres/:genreId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"genres",
+										":genreId"
+									],
+									"variable": [
+										{
+											"key": "genreId",
+											"value": "bd6b3075-f0fd-4bf1-a13d-9aa630f73e1a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a genre",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Banidos\",\r\n    \"is_active\": \"true\",\r\n    \"categories_id\": [\r\n        \"108b24d9-2a92-41ec-bfbf-6021258f1bc1\",\r\n        \"532b6264-8cc8-4d23-bd0b-6d82a93fc253\",\r\n        \"f59394a3-67b7-4cf8-a91f-2b8b275f97bc\",\r\n        \"e0a73c81-c64b-424e-a4c8-b4261fe86143\",\r\n        \"b64cbef8-ce8e-4a8c-9bdf-49177eed1807\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/genres/:genreId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"genres",
+										":genreId"
+									],
+									"variable": [
+										{
+											"key": "genreId",
+											"value": "2894f5fa-6799-4f1a-8298-25c45bcf0465"
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
