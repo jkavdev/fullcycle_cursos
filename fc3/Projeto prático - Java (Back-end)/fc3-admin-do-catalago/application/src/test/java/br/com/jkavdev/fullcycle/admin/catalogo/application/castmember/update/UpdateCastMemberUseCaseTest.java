@@ -36,7 +36,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidCommand_whenCallsUpdateCastMember_shouldReturnItsIdentifier() {
+    public void givenAValidCommand_whenCallsUpdateCastMember_shouldReturnItsIdentifier() throws InterruptedException {
         // given
         final var aMember = CastMember.newMember("vin diesel", CastMemberType.DIRECTOR);
 
@@ -55,6 +55,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
 
         when(castMemberGateway.update(any()))
                 .thenAnswer(returnsFirstArg());
+
+        Thread.sleep(1);
 
         // when
         final var actualOutput = useCase.execute(aCommand);
