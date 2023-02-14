@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity(name = "CastMember")
-@Table(name = "cast_member")
+@Table(name = "cast_members")
 public class CastMemberJpaEntity {
 
     @Id
@@ -18,7 +18,7 @@ public class CastMemberJpaEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name", nullable = false)
+    @Column(name = "type", nullable = false)
     private CastMemberType type;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "datetime(6)")
