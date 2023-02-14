@@ -5,8 +5,6 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.ThrowsV
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
-
 public class CategoryTest {
 
     @Test
@@ -121,7 +119,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenAValidActiveCategory_whenCallDeactivate_thenReturnCategoryInactivated() {
+    public void givenAValidActiveCategory_whenCallDeactivate_thenReturnCategoryInactivated() throws InterruptedException {
         final var expectedName = "Filmes";
         final var expectedDescription = "Melhor categoria";
         final var expectedIsActive = false;
@@ -135,6 +133,8 @@ public class CategoryTest {
         Assertions.assertTrue(aCategory.isActive());
         Assertions.assertNull(aCategory.getDeletedAt());
 
+        Thread.sleep(1);
+
         final var actualCategory = aCategory.deactivate();
 
         Assertions.assertDoesNotThrow(() -> actualCategory.validate(new ThrowsValidationHandler()));
@@ -147,12 +147,12 @@ public class CategoryTest {
         Assertions.assertEquals(createdAt, actualCategory.getCreatedAt());
 //        test roda tao rapido que as duas datas sao iguais
 //        ou pelo menos acho que eh isso, soh da erro quando roda todos os testes de uma vez
-//        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
+        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
         Assertions.assertNotNull(actualCategory.getDeletedAt());
     }
 
     @Test
-    public void givenAValidActiveCategory_whenCallActivate_thenReturnCategoryActivated() {
+    public void givenAValidActiveCategory_whenCallActivate_thenReturnCategoryActivated() throws InterruptedException {
         final var expectedName = "Filmes";
         final var expectedDescription = "Melhor categoria";
         final var expectedIsActive = true;
@@ -165,6 +165,8 @@ public class CategoryTest {
 
         Assertions.assertFalse(aCategory.isActive());
         Assertions.assertNotNull(aCategory.getDeletedAt());
+
+        Thread.sleep(1);
 
         final var actualCategory = aCategory.activate();
 
@@ -182,7 +184,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenAValidCategory_whenCallUpdate_thenReturnCategoryUpdated() {
+    public void givenAValidCategory_whenCallUpdate_thenReturnCategoryUpdated() throws InterruptedException {
         final var expectedName = "Filmes";
         final var expectedDescription = "Melhor categoria";
         final var expectedIsActive = true;
@@ -194,6 +196,8 @@ public class CategoryTest {
 
         final var createdAt = aCategory.getCreatedAt();
         final var updatedAt = aCategory.getUpdatedAt();
+
+        Thread.sleep(1);
 
         final var actualCategory =
                 aCategory.update(expectedName, expectedDescription, expectedIsActive);
@@ -208,12 +212,12 @@ public class CategoryTest {
         Assertions.assertNotNull(actualCategory.getCreatedAt());
 //        test roda tao rapido que as duas datas sao iguais
 //        aqui rodando apenas esse teste da o erro nas datas
-//        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
+        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
         Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
     @Test
-    public void givenAValidCategory_whenCallUpdateWithInvalidParams_thenReturnCategoryUpdated() {
+    public void givenAValidCategory_whenCallUpdateWithInvalidParams_thenReturnCategoryUpdated() throws InterruptedException {
         final String expectedName = null;
         final var expectedDescription = "Melhor categoria";
         final var expectedIsActive = true;
@@ -226,6 +230,8 @@ public class CategoryTest {
         final var createdAt = aCategory.getCreatedAt();
         final var updatedAt = aCategory.getUpdatedAt();
 
+        Thread.sleep(1);
+
         final var actualCategory =
                 aCategory.update(expectedName, expectedDescription, expectedIsActive);
 
@@ -236,7 +242,7 @@ public class CategoryTest {
         Assertions.assertEquals(createdAt, actualCategory.getCreatedAt());
 //        test roda tao rapido que as duas datas sao iguais
 //        aqui rodando apenas esse teste da o erro nas datas
-//        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
+        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
         Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
