@@ -54,7 +54,7 @@ public class CastMemberJpaEntity {
         );
     }
 
-    private CastMember toAggregate() {
+    public CastMember toAggregate() {
         return CastMember.with(
                 CastMemberID.from(getId()),
                 getName(),
