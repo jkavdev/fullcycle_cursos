@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.controllers;
+package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryListResponse;

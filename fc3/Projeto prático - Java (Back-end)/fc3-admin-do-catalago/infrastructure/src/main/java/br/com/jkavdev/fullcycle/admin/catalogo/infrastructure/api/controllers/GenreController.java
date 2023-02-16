@@ -9,6 +9,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update.UpdateGe
 import br.com.jkavdev.fullcycle.admin.catalogo.application.genre.update.UpdateGenreUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.GenreAPI;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.GenreListResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.genre.models.GenreResponse;

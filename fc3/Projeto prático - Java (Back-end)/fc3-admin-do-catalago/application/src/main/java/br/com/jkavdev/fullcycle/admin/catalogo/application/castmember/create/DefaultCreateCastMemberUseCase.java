@@ -7,7 +7,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notific
 
 import java.util.Objects;
 
-public final class DefaultCreateCastMemberUseCase extends CreateCastMemberUseCase {
+public non-sealed class DefaultCreateCastMemberUseCase extends CreateCastMemberUseCase {
 
     private final CastMemberGateway castMemberGateway;
 
@@ -32,6 +32,6 @@ public final class DefaultCreateCastMemberUseCase extends CreateCastMemberUseCas
     }
 
     private void notify(final Notification notification) {
-        throw new NotificationException("could not create aggregate castmember", notification);
+        throw new NotificationException("could not create aggregate cast member", notification);
     }
 }

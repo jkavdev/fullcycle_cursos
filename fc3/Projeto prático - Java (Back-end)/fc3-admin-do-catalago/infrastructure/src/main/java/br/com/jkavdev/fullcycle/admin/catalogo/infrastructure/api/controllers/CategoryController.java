@@ -9,11 +9,12 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.category.retrieve.lis
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.category.update.UpdateCategoryUseCase;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
-import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.CategoryAPI;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryListResponse;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.presenters.CategoryApiPresenter;
