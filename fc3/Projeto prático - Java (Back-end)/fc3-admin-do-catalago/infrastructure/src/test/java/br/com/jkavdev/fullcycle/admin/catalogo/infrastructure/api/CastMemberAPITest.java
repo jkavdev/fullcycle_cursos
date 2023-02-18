@@ -4,6 +4,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.ControllerTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.create.CreateCastMemberOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.create.DefaultCreateCastMemberUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.delete.DefaultDeleteCastMemberUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrieve.get.CastMemberOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.update.DefaultUpdateCastMemberUseCase;
@@ -50,6 +51,9 @@ public class CastMemberAPITest {
 
     @MockBean
     private DefaultUpdateCastMemberUseCase updateCastMemberUseCase;
+
+    @MockBean
+    private DefaultDeleteCastMemberUseCase deleteCastMemberUseCase;
 
     @Test
     public void givenAValidCommand_whenCallsCreateCastMember_shouldReturnItsIdentifier() throws Exception {
@@ -281,6 +285,25 @@ public class CastMemberAPITest {
                         && Objects.equals(expectedName, actualCmd.name())
                         && Objects.equals(expectedType, actualCmd.type())
         ));
+    }
+
+    @Test
+    public void givenAValidId_whenCallsDeleteById_shouldDeleteIt() throws Exception {
+        // given
+        final var expectedId = "123";
+
+        doNothing()
+                .when(deleteCastMemberUseCase).execute(any());
+
+        // when
+        final var aRequest = delete("/cast_members/{id}", expectedId);
+
+        final var response = this.mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isNoContent());
+
+        verify(deleteCastMemberUseCase).execute(eq(expectedId));
     }
 
 }
