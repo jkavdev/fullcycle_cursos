@@ -66,7 +66,7 @@ class CastMemberMysqlGatewayTest {
     }
 
     @Test
-    public void givenAValidCastMember_whenCallsUpdate_shouldRefreshIt() {
+    public void givenAValidCastMember_whenCallsUpdate_shouldRefreshIt() throws InterruptedException {
         // given
         final var expectedName = name();
         final var expectedType = CastMemberType.ACTOR;
@@ -79,6 +79,8 @@ class CastMemberMysqlGatewayTest {
         Assertions.assertEquals(1, castMemberRepository.count());
         Assertions.assertEquals("vind", currentMember.getName());
         Assertions.assertEquals(CastMemberType.DIRECTOR, currentMember.getType());
+
+        Thread.sleep(1);
 
         // when
         final var actualMember = castMemberMysqlGateway.update(

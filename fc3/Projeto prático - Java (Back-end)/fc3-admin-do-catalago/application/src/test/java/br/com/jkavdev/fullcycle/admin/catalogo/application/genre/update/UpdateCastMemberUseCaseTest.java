@@ -7,7 +7,6 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationExc
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.Genre;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,10 +37,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
         return List.of(categoryGateway, genreGateway);
     }
 
-    //    TODO: desabilitando testes que dao erro ao rodar todos os testes juntos
-    @Disabled
     @Test
-    public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() {
+    public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
         // given
         final var aGenre = Genre.newGenre("acao", true);
 
@@ -62,6 +59,9 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
 
         when(genreGateway.update(any()))
                 .thenAnswer(returnsFirstArg());
+
+        Thread.sleep(1);
+
         // when
         final var actualOutput = useCase.execute(aCommand);
 
@@ -132,10 +132,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
         ));
     }
 
-//    TODO: desabilitando testes que dao erro ao rodar todos os testes juntos
-    @Disabled
     @Test
-    public void givenAValidCommandWithInactiveGenre_whenCallsUpdateGenre_shouldReturnGenreId() {
+    public void givenAValidCommandWithInactiveGenre_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
         // given
         final var aGenre = Genre.newGenre("acao", true);
 
@@ -159,6 +157,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
 
         Assertions.assertTrue(aGenre.isActive());
         Assertions.assertNull(aGenre.getDeletedAt());
+
+        Thread.sleep(1);
 
         // when
         final var actualOutput = useCase.execute(aCommand);
