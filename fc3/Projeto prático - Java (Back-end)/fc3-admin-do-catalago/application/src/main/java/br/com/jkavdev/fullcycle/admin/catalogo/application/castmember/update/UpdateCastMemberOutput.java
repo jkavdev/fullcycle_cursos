@@ -1,6 +1,7 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.update;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMember;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 
 public record UpdateCastMemberOutput(
         String id
@@ -13,6 +14,10 @@ public record UpdateCastMemberOutput(
     public static UpdateCastMemberOutput from(
             final CastMember aMember
     ) {
-        return new UpdateCastMemberOutput(aMember.getId().getValue());
+        return from(aMember.getId());
+    }
+
+    public static UpdateCastMemberOutput from(final CastMemberID anId) {
+        return from(anId.getValue());
     }
 }
