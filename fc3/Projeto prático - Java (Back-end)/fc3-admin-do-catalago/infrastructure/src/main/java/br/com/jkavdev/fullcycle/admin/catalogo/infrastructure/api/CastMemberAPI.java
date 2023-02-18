@@ -1,5 +1,7 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.CastMemberListResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.CastMemberResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.UpdateCastMemberRequest;
@@ -65,4 +67,18 @@ public interface CastMemberAPI {
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     void deleteById(@PathVariable String id);
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "List all cast members")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cast members retrieved"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Pagination<CastMemberListResponse> list(
+            @RequestParam(name = "search", required = false, defaultValue = "") final String search,
+            @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
+            @RequestParam(name = "perPage", required = false, defaultValue = "10") final int perPage,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") final String sort,
+            @RequestParam(name = "dir", required = false, defaultValue = "asc") final String direction
+    );
 }
