@@ -36,6 +36,11 @@ public interface MockDsl {
         return CastMemberID.from(this.given("/cast_members", aRequestBody));
     }
 
+    default ResultActions givenACastMemberResult(final String aName, final CastMemberType aType) throws Exception {
+        final var aRequestBody = new CreateCastMemberRequest(aName, aType);
+        return this.givenResult("/cast_members", aRequestBody);
+    }
+
     default ResultActions updateACastMember(final CastMemberID anId, final String aName, final CastMemberType aType) throws Exception {
         return this.update("/cast_members/", anId, new UpdateCastMemberRequest(aName, aType));
     }
@@ -48,9 +53,8 @@ public interface MockDsl {
         return this.retrieveResult("/cast_members/", anId);
     }
 
-    default ResultActions givenACastMemberResult(final String aName, final CastMemberType aType) throws Exception {
-        final var aRequestBody = new CreateCastMemberRequest(aName, aType);
-        return this.givenResult("/cast_members", aRequestBody);
+    default ResultActions deleteACastMember(final CastMemberID anId) throws Exception {
+        return this.delete("/cast_members/", anId);
     }
 
     default ResultActions listCastMembers(final int page, final int perPage) throws Exception {
