@@ -131,8 +131,6 @@ public class Video extends AggregateRoot<VideoID> {
     }
 
     public static Video with(final Video aVideo) {
-        final var now = InstantUtils.now();
-        final var anId = VideoID.unique();
         return new Video(
                 aVideo.getId(),
                 aVideo.getTitle(),
@@ -155,13 +153,34 @@ public class Video extends AggregateRoot<VideoID> {
         );
     }
 
-    public String getTitle() {
-        return title;
+    public Video update(
+            final String aTitle,
+            final String aDescription,
+            final Year aLaunchYear,
+            final double aDuration,
+            final boolean wasOpened,
+            final boolean wasPublished,
+            final Rating aRating,
+            final Set<CategoryID> categories,
+            final Set<GenreID> genres,
+            final Set<CastMemberID> members
+    ) {
+        this.title = aTitle;
+        this.description = aDescription;
+        this.launchedAt = aLaunchYear;
+        this.duration = aDuration;
+        this.opened = wasOpened;
+        this.published = wasPublished;
+        this.rating = aRating;
+        this.updatedAt = InstantUtils.now();
+        this.setCategories(categories);
+        this.setGenres(genres);
+        this.setCastMembers(members);
+        return this;
     }
 
-    public Video setTitle(String title) {
-        this.title = title;
-        return this;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
@@ -177,45 +196,20 @@ public class Video extends AggregateRoot<VideoID> {
         return launchedAt;
     }
 
-    public Video setLaunchedAt(Year launchedAt) {
-        this.launchedAt = launchedAt;
-        return this;
-    }
-
     public double getDuration() {
         return duration;
-    }
-
-    public Video setDuration(double duration) {
-        this.duration = duration;
-        return this;
     }
 
     public Rating getRating() {
         return rating;
     }
 
-    public Video setRating(Rating rating) {
-        this.rating = rating;
-        return this;
-    }
-
     public boolean getOpened() {
         return opened;
     }
 
-    public Video setOpened(boolean opened) {
-        this.opened = opened;
-        return this;
-    }
-
     public boolean getPublished() {
         return published;
-    }
-
-    public Video setPublished(boolean published) {
-        this.published = published;
-        return this;
     }
 
     public Instant getCreatedAt() {
@@ -242,6 +236,7 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video setBanner(ImageMedia banner) {
         this.banner = banner;
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -251,6 +246,7 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video setThumbnail(ImageMedia thumbnail) {
         this.thumbnail = thumbnail;
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -260,6 +256,7 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video setThumbnailHalf(ImageMedia thumbnailHalf) {
         this.thumbnailHalf = thumbnailHalf;
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -269,6 +266,7 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video setTrailer(AudioVideoMedia trailer) {
         this.trailer = trailer;
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -278,6 +276,7 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video setVideo(AudioVideoMedia video) {
         this.video = video;
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -285,26 +284,23 @@ public class Video extends AggregateRoot<VideoID> {
         return categories != null ? Collections.unmodifiableSet(categories) : Collections.emptySet();
     }
 
-    public Video setCategories(Set<CategoryID> categories) {
+    public void setCategories(Set<CategoryID> categories) {
         this.categories = categories != null ? new HashSet<>(categories) : Collections.emptySet();
-        return this;
     }
 
     public Set<GenreID> getGenres() {
         return genres != null ? Collections.unmodifiableSet(genres) : Collections.emptySet();
     }
 
-    public Video setGenres(Set<GenreID> genres) {
+    public void setGenres(Set<GenreID> genres) {
         this.genres = genres != null ? new HashSet<>(genres) : Collections.emptySet();
-        return this;
     }
 
     public Set<CastMemberID> getCastMembers() {
         return castMembers != null ? Collections.unmodifiableSet(castMembers) : Collections.emptySet();
     }
 
-    public Video setCastMembers(Set<CastMemberID> castMembers) {
+    public void setCastMembers(Set<CastMemberID> castMembers) {
         this.castMembers = castMembers != null ? new HashSet<>(castMembers) : Collections.emptySet();
-        return this;
     }
 }
