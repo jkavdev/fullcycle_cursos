@@ -1,8 +1,11 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.e2e;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.Identifier;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
@@ -25,6 +28,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public interface MockDsl {
 
     MockMvc mvc();
+
+    default CastMemberID givenACastMember(final String aName, final CastMemberType aType) throws Exception {
+        final var aRequestBody = new CreateCastMemberRequest(aName, aType);
+
+        return CastMemberID.from(this.given("/cast_members", aRequestBody));
+    }
 
     default GenreID givenAGenre(final String aName, final boolean isActive, final List<CategoryID> categories) throws Exception {
         final var aRequestBody = new CreateGenreRequest(aName, mapTo(categories, CategoryID::getValue), isActive);
