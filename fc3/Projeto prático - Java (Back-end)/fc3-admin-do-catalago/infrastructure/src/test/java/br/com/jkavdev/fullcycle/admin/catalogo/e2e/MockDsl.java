@@ -7,6 +7,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.CastMemberResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.CreateCastMemberRequest;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.castmember.models.UpdateCastMemberRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
@@ -33,6 +34,10 @@ public interface MockDsl {
     default CastMemberID givenACastMember(final String aName, final CastMemberType aType) throws Exception {
         final var aRequestBody = new CreateCastMemberRequest(aName, aType);
         return CastMemberID.from(this.given("/cast_members", aRequestBody));
+    }
+
+    default ResultActions updateACastMember(final CastMemberID anId, final String aName, final CastMemberType aType) throws Exception {
+        return this.update("/cast_members/", anId, new UpdateCastMemberRequest(aName, aType));
     }
 
     default CastMemberResponse retrieveACastMember(final CastMemberID anId) throws Exception {
