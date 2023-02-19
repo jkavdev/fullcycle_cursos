@@ -161,6 +161,161 @@
 					]
 				},
 				{
+					"name": "cast members",
+					"item": [
+						{
+							"name": "search cast members",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/cast_members?perPage=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cast_members"
+									],
+									"query": [
+										{
+											"key": "perPage",
+											"value": "10"
+										},
+										{
+											"key": "search",
+											"value": "maria",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove a cast member",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/cast_members/:memberId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cast_members",
+										":memberId"
+									],
+									"variable": [
+										{
+											"key": "memberId",
+											"value": "ad629f07-2d01-48fc-8891-77453771f3be"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a cast member",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Patricio Cois\",\r\n    \"type\": \"DIRECTOR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/cast_members/:memberId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cast_members",
+										":memberId"
+									],
+									"variable": [
+										{
+											"key": "memberId",
+											"value": "17306d9f-b7ff-4f2d-ace0-9a4a18444005"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a cast member",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Marcus Mellen\",\r\n    \"type\": \"ACTOR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/cast_members",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cast_members"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "retrieve a cast member",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/cast_members/:memberId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"cast_members",
+										":memberId"
+									],
+									"variable": [
+										{
+											"key": "memberId",
+											"value": "17306d9f-b7ff-4f2d-ace0-9a4a18444005"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "genres",
 					"item": [
 						{
