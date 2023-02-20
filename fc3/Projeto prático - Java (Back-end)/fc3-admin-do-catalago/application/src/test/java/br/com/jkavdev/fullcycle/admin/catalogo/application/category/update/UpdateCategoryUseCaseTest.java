@@ -165,7 +165,7 @@ public class UpdateCategoryUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnAException() {
+    public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnAException() throws InterruptedException {
         final var aCategory =
                 Category.newCategory("Film", null, true);
 
@@ -188,6 +188,8 @@ public class UpdateCategoryUseCaseTest extends UseCaseTest {
 
         when(categoryGateway.update(any()))
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
+
+        Thread.sleep(1);
 
         final var notification = useCase.execute(aCommand).getLeft();
 
