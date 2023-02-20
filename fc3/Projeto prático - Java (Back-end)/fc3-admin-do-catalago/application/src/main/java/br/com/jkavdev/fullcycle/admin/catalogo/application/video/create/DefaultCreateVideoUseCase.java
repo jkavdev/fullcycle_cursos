@@ -6,6 +6,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.InternalErrorException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
@@ -15,6 +16,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notific
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Rating;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Video;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoGateway;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.MediaResourceGateway;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -35,22 +37,27 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
 
     private final VideoGateway videoGateway;
 
+    private final MediaResourceGateway mediaResourceGateway;
+
     public DefaultCreateVideoUseCase(
             final CategoryGateway categoryGateway,
             final GenreGateway genreGateway,
             final CastMemberGateway castMemberGateway,
-            final VideoGateway videoGateway
+            final VideoGateway videoGateway,
+            final MediaResourceGateway mediaResourceGateway
     ) {
         this.categoryGateway = Objects.requireNonNull(categoryGateway);
         this.genreGateway = Objects.requireNonNull(genreGateway);
         this.castMemberGateway = Objects.requireNonNull(castMemberGateway);
         this.videoGateway = Objects.requireNonNull(videoGateway);
+        this.mediaResourceGateway = Objects.requireNonNull(mediaResourceGateway);
     }
 
     @Override
     public CreateVideoOutput execute(CreateVideoCommand aCommand) {
 
         final var aRating = Rating.of(aCommand.rating()).orElseThrow(invalidRating(aCommand.rating()));
+        final var aLaunchYear = Year.of(aCommand.launchedAt());
         final var categories = toIdentifier(aCommand.categories(), CategoryID::from);
         final var genres = toIdentifier(aCommand.genres(), GenreID::from);
         final var members = toIdentifier(aCommand.members(), CastMemberID::from);
@@ -63,7 +70,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
         final var aVideo = Video.newVideo(
                 aCommand.title(),
                 aCommand.description(),
-                Year.of(aCommand.launchedAt()),
+                aLaunchYear,
                 aCommand.duration(),
                 aCommand.opened(),
                 aCommand.published(),
@@ -83,7 +90,47 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
     }
 
     private Video create(final CreateVideoCommand aCommand, final Video aVideo) {
-        return this.videoGateway.create(aVideo);
+
+        final var anId = aVideo.getId();
+
+        try {
+            final var aVideoMedia = aCommand.getVideo()
+                    .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, it))
+                    .orElse(null);
+
+            final var aTrailerMedia = aCommand.getTrailer()
+                    .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, it))
+                    .orElse(null);
+
+            final var aBannerMedia = aCommand.getBanner()
+                    .map(it -> this.mediaResourceGateway.storeImage(anId, it))
+                    .orElse(null);
+
+            final var aThumbMedia = aCommand.getThumbnail()
+                    .map(it -> this.mediaResourceGateway.storeImage(anId, it))
+                    .orElse(null);
+
+            final var aThumbHalfMedia = aCommand.getThumbnailHalf()
+                    .map(it -> this.mediaResourceGateway.storeImage(anId, it))
+                    .orElse(null);
+
+            return this.videoGateway.create(
+                    aVideo
+                            .setVideo(aVideoMedia)
+                            .setTrailer(aTrailerMedia)
+                            .setBanner(aBannerMedia)
+                            .setThumbnail(aThumbMedia)
+                            .setThumbnailHalf(aThumbHalfMedia)
+
+            );
+        } catch (final Throwable t) {
+            this.mediaResourceGateway.clearResources(anId);
+            throw InternalErrorException.with(
+                    "an error on create video was observed [videoId:%s]".formatted(anId.getValue())
+                    , t
+            );
+        }
+
     }
 
     private ValidationHandler validateCategories(final Set<CategoryID> ids) {
