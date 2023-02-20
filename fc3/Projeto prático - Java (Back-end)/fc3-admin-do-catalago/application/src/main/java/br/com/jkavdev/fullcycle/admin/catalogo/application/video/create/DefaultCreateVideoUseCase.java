@@ -5,7 +5,6 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberGatew
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.InternalErrorException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
@@ -13,10 +12,10 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.Error;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.Notification;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.MediaResourceGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Rating;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Video;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoGateway;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.MediaResourceGateway;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
@@ -55,9 +53,8 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
 
     @Override
     public CreateVideoOutput execute(CreateVideoCommand aCommand) {
-
-        final var aRating = Rating.of(aCommand.rating()).orElseThrow(invalidRating(aCommand.rating()));
-        final var aLaunchYear = Year.of(aCommand.launchedAt());
+        final var aRating = Rating.of(aCommand.rating()).orElse(null);
+        final var aLaunchYear = aCommand.launchedAt() != null ? Year.of(aCommand.launchedAt()) : null;
         final var categories = toIdentifier(aCommand.categories(), CategoryID::from);
         final var genres = toIdentifier(aCommand.genres(), GenreID::from);
         final var members = toIdentifier(aCommand.members(), CastMemberID::from);
@@ -168,10 +165,6 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
         }
 
         return notification;
-    }
-
-    private Supplier<DomainException> invalidRating(final String rating) {
-        return () -> DomainException.with(new Error("rating not found %s".formatted(rating)));
     }
 
     private <T> Set<T> toIdentifier(final Set<String> ids, final Function<String, T> mapper) {
