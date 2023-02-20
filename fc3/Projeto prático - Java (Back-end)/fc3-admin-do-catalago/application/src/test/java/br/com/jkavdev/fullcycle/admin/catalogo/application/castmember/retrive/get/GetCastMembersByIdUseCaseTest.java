@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class GetCastMemberByIdUseCaseTest extends UseCaseTest {
+public class GetCastMembersByIdUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultGetCastMemberByIdUseCase useCase;
@@ -35,7 +35,7 @@ public class GetCastMemberByIdUseCaseTest extends UseCaseTest {
     public void givenAValidId_whenCallsGetCastMember_shouldReturnIt() {
         // given
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aMember = CastMember.newMember(expectedName, expectedType);
 
@@ -69,9 +69,8 @@ public class GetCastMemberByIdUseCaseTest extends UseCaseTest {
                 .thenReturn(Optional.empty());
 
         // when
-        final var actualOutput = Assertions.assertThrows(NotFoundException.class, () -> {
-            useCase.execute(expectedId.getValue());
-        });
+        final var actualOutput =
+                Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(expectedId.getValue()));
 
         // then
         Assertions.assertNotNull(actualOutput);

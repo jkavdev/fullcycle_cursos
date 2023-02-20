@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-public class GetCastMemberByIdUseCaseTest extends UseCaseTest {
+public class GetCastMembersByIdUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultGetGenreByIdUseCase useCase;
@@ -81,12 +81,6 @@ public class GetCastMemberByIdUseCaseTest extends UseCaseTest {
 
         // then
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
-    }
-
-    private List<String> asString(final List<CategoryID> ids) {
-        return ids.stream()
-                .map(CategoryID::getValue)
-                .toList();
     }
 
 }

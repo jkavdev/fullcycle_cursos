@@ -35,8 +35,8 @@ public class ListCastMembersUseCaseTest extends UseCaseTest {
     public void givenAValidQuery_whenCallsListCastMembers_shouldReturnAll() {
         // given
         final var members = List.of(
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type()),
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type())
+                CastMember.newMember(Fixture.name(), Fixture.CastMembers.type()),
+                CastMember.newMember(Fixture.name(), Fixture.CastMembers.type())
         );
 
         final var expectedPage = 0;
@@ -131,9 +131,8 @@ public class ListCastMembersUseCaseTest extends UseCaseTest {
                 new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         // when
-        final var actualException = Assertions.assertThrows(IllegalStateException.class, () -> {
-            useCase.execute(aQuery);
-        });
+        final var actualException =
+                Assertions.assertThrows(IllegalStateException.class, () -> useCase.execute(aQuery));
 
         // then
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());

@@ -151,9 +151,8 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
                 CreateGenreCommand.with(expectName, expectedIsActive, asString(expectedCategories));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -178,9 +177,8 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
                 CreateGenreCommand.with(expectName, expectedIsActive, asString(expectedCategories));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -212,9 +210,8 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
                 CreateGenreCommand.with(expectName, expectedIsActive, asString(expectedCategories));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -247,9 +244,8 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
                 CreateGenreCommand.with(expectName, expectedIsActive, asString(expectedCategories));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -261,9 +257,4 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Mockito.verify(genreGateway, times(0)).create(any());
     }
 
-    private List<String> asString(final List<CategoryID> categories) {
-        return categories.stream()
-                .map(CategoryID::getValue)
-                .toList();
-    }
 }

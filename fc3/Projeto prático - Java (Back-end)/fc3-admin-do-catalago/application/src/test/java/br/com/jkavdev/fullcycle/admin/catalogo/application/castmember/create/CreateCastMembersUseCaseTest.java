@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-public class CreateCastMemberUseCaseTest extends UseCaseTest {
+public class CreateCastMembersUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultCreateCastMemberUseCase useCase;
@@ -36,7 +36,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     public void givenAValidCommand_whenCallsCreateCastMember_shouldReturnIt() {
         // given
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
@@ -63,7 +63,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     public void givenAInvalidName_whenCallsCreateCastMember_shouldThrowsNotificationException() {
         // given
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";
@@ -71,9 +71,8 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
         final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -95,9 +94,8 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
         final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);

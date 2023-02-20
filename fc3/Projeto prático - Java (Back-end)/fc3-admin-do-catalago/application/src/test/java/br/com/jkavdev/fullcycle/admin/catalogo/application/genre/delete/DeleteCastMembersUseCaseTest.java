@@ -15,7 +15,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class DeleteCastMemberUseCaseTest extends UseCaseTest {
+public class DeleteCastMembersUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultDeleteGenreUseCase useCase;
@@ -70,9 +70,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
                 .when(genreGateway).deleteById(any());
 
         // when
-        Assertions.assertThrows(IllegalStateException.class, () -> {
-            useCase.execute(expectedId.getValue());
-        });
+        Assertions.assertThrows(IllegalStateException.class, () -> useCase.execute(expectedId.getValue()));
 
         // when
         Mockito.verify(genreGateway, times(1)).deleteById(expectedId);

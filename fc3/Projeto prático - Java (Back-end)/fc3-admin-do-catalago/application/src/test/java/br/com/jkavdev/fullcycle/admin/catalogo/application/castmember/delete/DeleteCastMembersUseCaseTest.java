@@ -15,7 +15,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class DeleteCastMemberUseCaseTest extends UseCaseTest {
+public class DeleteCastMembersUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultDeleteCastMemberUseCase useCase;
@@ -31,7 +31,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidId_whenCallsDeleteCastMember_shouldDeleteIt() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 
@@ -63,7 +63,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidId_whenCallsDeleteCastMemberAndGatewayThrowsException_shouldReceiveException() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 

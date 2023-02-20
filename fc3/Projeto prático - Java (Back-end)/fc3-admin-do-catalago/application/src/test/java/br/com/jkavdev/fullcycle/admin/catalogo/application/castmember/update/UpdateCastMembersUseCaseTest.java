@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-public class UpdateCastMemberUseCaseTest extends UseCaseTest {
+public class UpdateCastMembersUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultUpdateCastMemberUseCase useCase;
@@ -98,9 +98,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
                 .thenReturn(Optional.of(aMember));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -134,9 +133,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
                 .thenReturn(Optional.of(aMember));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);
@@ -151,11 +149,9 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAInvalidId_whenCallsUpdateCastMember_shouldThrowsNotFoundException() {
         // given
-        final var aMember = CastMember.newMember("vin diesel", CastMemberType.DIRECTOR);
-
         final var expectedId = CastMemberID.from("123");
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorMessage = "CastMember with ID 123 was not found";
 
@@ -169,9 +165,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
                 .thenReturn(Optional.empty());
 
         // when
-        final var actualException = Assertions.assertThrows(NotFoundException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertNotNull(actualException);

@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-public class UpdateCastMemberUseCaseTest extends UseCaseTest {
+public class UpdateCastMembersUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;
@@ -204,9 +204,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
                 .thenReturn(Optional.of(Genre.with(aGenre)));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
@@ -251,9 +250,8 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
                 .thenReturn(List.of(filmes));
 
         // when
-        final var actualException = Assertions.assertThrows(NotificationException.class, () -> {
-            useCase.execute(aCommand);
-        });
+        final var actualException =
+                Assertions.assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         // then
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
@@ -265,12 +263,6 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
         Mockito.verify(categoryGateway, times(1)).existsByIds(eq(expectedCategories));
 
         Mockito.verify(genreGateway, times(0)).update(any());
-    }
-
-    private List<String> asString(final List<CategoryID> ids) {
-        return ids.stream()
-                .map(CategoryID::getValue)
-                .toList();
     }
 
 }
