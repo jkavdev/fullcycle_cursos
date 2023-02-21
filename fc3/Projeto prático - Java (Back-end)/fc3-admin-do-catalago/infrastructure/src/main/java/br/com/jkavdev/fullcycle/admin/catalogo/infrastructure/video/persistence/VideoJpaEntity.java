@@ -1,5 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Rating;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Video;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoID;
@@ -7,8 +8,11 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoID;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -47,7 +51,7 @@ public class VideoJpaEntity {
     @Column(name = "updated_at", nullable = false, columnDefinition = "datetime(6)")
     private Instant updatedAt;
 
-//    TODO: implementar relacionamentos com tabela PIVO
+    //    TODO: implementar relacionamentos com tabela PIVO
     @OneToOne(cascade = ALL, fetch = EAGER, orphanRemoval = true)
     @JoinColumn(name = "video_id")
     private AudioVideoMediaJpaEntity video;
@@ -68,7 +72,12 @@ public class VideoJpaEntity {
     @JoinColumn(name = "thumbnail_half_id")
     private ImageMediaJpaEntity thumbnailHalf;
 
+    @OneToMany(mappedBy = "video", cascade = ALL, orphanRemoval = true)
+    @JoinColumn(name = "thumbnail_half_id")
+    private Set<VideoCategoryJpaEntity> categories;
+
     private VideoJpaEntity() {
+        this.categories = new HashSet<>(3);
     }
 
     private VideoJpaEntity(
@@ -88,6 +97,7 @@ public class VideoJpaEntity {
             final ImageMediaJpaEntity thumbnail,
             final ImageMediaJpaEntity thumbnailHalf
     ) {
+        this();
         this.id = id;
         this.title = title;
         this.description = description;
@@ -103,10 +113,11 @@ public class VideoJpaEntity {
         this.banner = banner;
         this.thumbnail = thumbnail;
         this.thumbnailHalf = thumbnailHalf;
+        this.categories = new HashSet<>();
     }
 
     public static VideoJpaEntity from(final Video aVideo) {
-        return new VideoJpaEntity(
+        final var entity = new VideoJpaEntity(
                 UUID.fromString(aVideo.getId().getValue()),
                 aVideo.getTitle(),
                 aVideo.getDescription(),
@@ -131,8 +142,12 @@ public class VideoJpaEntity {
                         .orElse(null),
                 aVideo.getThumbnailHalf()
                         .map(ImageMediaJpaEntity::from)
-                        .orElse(null)
-        );
+                        .orElse(null));
+
+        aVideo.getCategories()
+                .forEach(entity::addCategory);
+
+        return entity;
     }
 
     public Video toAggregate() {
@@ -162,10 +177,16 @@ public class VideoJpaEntity {
                 Optional.ofNullable(getVideo())
                         .map(AudioVideoMediaJpaEntity::toDomain)
                         .orElse(null),
-                null,
+                getCategories().stream()
+                        .map(it -> CategoryID.from(it.getId().getCategoryId()))
+                        .collect(Collectors.toSet()),
                 null,
                 null
         );
+    }
+
+    public void addCategory(final CategoryID categoryID) {
+        this.categories.add(VideoCategoryJpaEntity.from(this, categoryID));
     }
 
     public UUID getId() {
@@ -226,5 +247,9 @@ public class VideoJpaEntity {
 
     public ImageMediaJpaEntity getThumbnailHalf() {
         return thumbnailHalf;
+    }
+
+    public Set<VideoCategoryJpaEntity> getCategories() {
+        return categories;
     }
 }
