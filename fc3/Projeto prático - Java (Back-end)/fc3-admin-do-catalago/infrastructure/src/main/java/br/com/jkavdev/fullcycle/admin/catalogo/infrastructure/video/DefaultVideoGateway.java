@@ -1,16 +1,19 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.Identifier;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Video;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoGateway;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoID;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoSearchQuery;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.*;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.utils.SqlUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence.VideoJpaEntity;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence.VideoRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DefaultVideoGateway implements VideoGateway {
 
@@ -35,7 +38,8 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     @Override
-    @Transactional(readOnly = true) // ativando transacao caso algum dos relacionamento necessite de uma consulta extra, EAGER
+    @Transactional(readOnly = true)
+    // ativando transacao caso algum dos relacionamento necessite de uma consulta extra, EAGER
     public Optional<Video> findById(final VideoID anId) {
         return videoRepository.findById(anId.getValue())
                 .map(VideoJpaEntity::toAggregate);
@@ -48,8 +52,37 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     @Override
-    public Pagination<Video> findAll(final VideoSearchQuery aQuery) {
-        return null;
+    public Pagination<VideoPreview> findAll(final VideoSearchQuery aQuery) {
+        final var page = PageRequest.of(
+                aQuery.page(),
+                aQuery.perPage(),
+                Sort.by(Sort.Direction.fromString(aQuery.direction()), aQuery.sort())
+        );
+
+        final var actualResult = this.videoRepository.findAll(
+                SqlUtils.like(aQuery.terms()),
+                toString(aQuery.castMembers()),
+                toString(aQuery.categories()),
+                toString(aQuery.genres()),
+                page
+        );
+
+
+        return new Pagination<>(
+                actualResult.getNumber(),
+                actualResult.getSize(),
+                actualResult.getTotalElements(),
+                actualResult.toList()
+        );
+    }
+
+    private Set<String> toString(final Set<? extends Identifier> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return null;
+        }
+        return ids.stream()
+                .map(Identifier::getValue)
+                .collect(Collectors.toSet());
     }
 
     private Video save(final Video aVideo) {
