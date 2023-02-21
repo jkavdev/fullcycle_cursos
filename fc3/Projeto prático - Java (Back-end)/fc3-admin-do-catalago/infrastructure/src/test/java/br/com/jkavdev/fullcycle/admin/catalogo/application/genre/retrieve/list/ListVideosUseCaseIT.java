@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @IntegrationTest
-public class ListGenresUseCaseIT {
+public class ListVideosUseCaseIT {
 
     @Autowired
     private ListGenresUseCase useCase;

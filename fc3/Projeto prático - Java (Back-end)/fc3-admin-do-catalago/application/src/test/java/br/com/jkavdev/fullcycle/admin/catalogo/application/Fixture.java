@@ -42,6 +42,21 @@ public final class Fixture {
         );
     }
 
+    public static Video video() {
+        return Video.newVideo(
+                Fixture.title(),
+                Videos.description(),
+                Year.of(Fixture.year()),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                Videos.rating(),
+                Set.of(Categories.aulas().getId()),
+                Set.of(Genres.tech().getId()),
+                Set.of(CastMembers.wesley().getId(), CastMembers.gabriel().getId())
+        );
+    }
+
     public static final class Categories {
 
         private static final Category AULAS =
