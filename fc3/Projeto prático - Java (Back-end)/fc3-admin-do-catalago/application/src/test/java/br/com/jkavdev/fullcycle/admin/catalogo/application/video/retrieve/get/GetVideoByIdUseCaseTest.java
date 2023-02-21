@@ -1,8 +1,7 @@
-package br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.retrieve.get;
+package br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.application.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
-import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get.DefaultGetVideoByIdUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.*;
 import org.junit.jupiter.api.Assertions;
