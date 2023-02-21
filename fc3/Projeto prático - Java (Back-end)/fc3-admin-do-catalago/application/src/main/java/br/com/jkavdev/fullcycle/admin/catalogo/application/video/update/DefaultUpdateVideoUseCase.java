@@ -99,6 +99,7 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
         final var anId = aVideo.getId();
 
         try {
+//            TODO: criar implementacao para que nao seja alterado todo o conteudo das media se nao houver alteracoes
             final var aVideoMedia = aCommand.getVideo()
                     .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, it))
                     .orElse(null);
