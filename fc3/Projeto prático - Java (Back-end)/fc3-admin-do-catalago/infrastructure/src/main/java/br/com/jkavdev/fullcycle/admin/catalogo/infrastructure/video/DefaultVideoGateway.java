@@ -22,7 +22,7 @@ public class DefaultVideoGateway implements VideoGateway {
 
     @Override
     @Transactional
-    public Video create(Video aVideo) {
+    public Video create(final Video aVideo) {
         return save(aVideo);
     }
 
@@ -35,22 +35,24 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     @Override
-    public Optional<Video> findById(VideoID anId) {
-        return Optional.empty();
+    @Transactional(readOnly = true) // ativando transacao caso algum dos relacionamento necessite de uma consulta extra, EAGER
+    public Optional<Video> findById(final VideoID anId) {
+        return videoRepository.findById(anId.getValue())
+                .map(VideoJpaEntity::toAggregate);
     }
 
     @Override
     @Transactional
-    public Video update(Video aVideo) {
+    public Video update(final Video aVideo) {
         return save(aVideo);
     }
 
     @Override
-    public Pagination<Video> findAll(VideoSearchQuery aQuery) {
+    public Pagination<Video> findAll(final VideoSearchQuery aQuery) {
         return null;
     }
 
-    private Video save(Video aVideo) {
+    private Video save(final Video aVideo) {
         return this.videoRepository.save(VideoJpaEntity.from(aVideo))
                 .toAggregate();
     }
