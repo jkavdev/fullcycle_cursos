@@ -1,5 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Rating;
@@ -79,9 +80,10 @@ public class VideoJpaEntity {
     @OneToMany(mappedBy = "video", cascade = ALL, orphanRemoval = true)
     private Set<VideoGenreJpaEntity> genres;
 
+    @OneToMany(mappedBy = "video", cascade = ALL, orphanRemoval = true)
+    private Set<VideoCastMemberJpaEntity> castMembers;
+
     private VideoJpaEntity() {
-        this.categories = new HashSet<>(3);
-        this.genres = new HashSet<>(3);
     }
 
     private VideoJpaEntity(
@@ -154,6 +156,9 @@ public class VideoJpaEntity {
         aVideo.getGenres()
                 .forEach(entity::addGenres);
 
+        aVideo.getCastMembers()
+                .forEach(entity::addMembers);
+
         return entity;
     }
 
@@ -190,7 +195,9 @@ public class VideoJpaEntity {
                 getGenres().stream()
                         .map(it -> GenreID.from(it.getId().getGenreId()))
                         .collect(Collectors.toSet()),
-                null
+                getCastMembers().stream()
+                        .map(it -> CastMemberID.from(it.getId().getCastMemberId()))
+                        .collect(Collectors.toSet())
         );
     }
 
@@ -200,6 +207,10 @@ public class VideoJpaEntity {
 
     public void addGenres(final GenreID genreID) {
         this.genres.add(VideoGenreJpaEntity.from(this, genreID));
+    }
+
+    public void addMembers(final CastMemberID memberID) {
+        this.castMembers.add(VideoCastMemberJpaEntity.from(this, memberID));
     }
 
     public UUID getId() {
@@ -268,5 +279,9 @@ public class VideoJpaEntity {
 
     public Set<VideoGenreJpaEntity> getGenres() {
         return genres;
+    }
+
+    public Set<VideoCastMemberJpaEntity> getCastMembers() {
+        return castMembers;
     }
 }
