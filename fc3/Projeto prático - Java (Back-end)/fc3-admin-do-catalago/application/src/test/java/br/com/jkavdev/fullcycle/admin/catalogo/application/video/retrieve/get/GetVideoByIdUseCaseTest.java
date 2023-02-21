@@ -3,6 +3,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.IdUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -121,7 +122,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
     }
 
     private AudioVideoMedia audioVideo(final Resource.Type type) {
-        final var checksum = UUID.randomUUID().toString();
+        final var checksum = IdUtils.uuid();
         return AudioVideoMedia.with(
                 checksum,
                 type.name().toLowerCase(),
@@ -132,7 +133,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
     }
 
     private ImageMedia image(final Resource.Type type) {
-        final var checksum = UUID.randomUUID().toString();
+        final var checksum = IdUtils.uuid();
         return ImageMedia.with(
                 checksum,
                 type.name().toLowerCase(),

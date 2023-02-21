@@ -3,7 +3,6 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -28,7 +27,7 @@ public class VideoCastMemberJpaEntity {
 
     public static VideoCastMemberJpaEntity from(final VideoJpaEntity video, final CastMemberID castMember) {
         return new VideoCastMemberJpaEntity(
-                VideoCastMemberID.from(video.getId(), UUID.fromString(castMember.getValue())),
+                VideoCastMemberID.from(video.getId(), castMember.getValue()),
                 video
         );
     }

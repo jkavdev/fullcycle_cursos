@@ -1,29 +1,24 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.Identifier;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.IdUtils;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class CategoryID extends Identifier {
 
     private final String value;
 
     private CategoryID(final String id) {
-        Objects.requireNonNull(id);
-        this.value = id;
+        this.value = Objects.requireNonNull(id);
     }
 
     public static CategoryID unique() {
-        return CategoryID.from(UUID.randomUUID());
+        return CategoryID.from(IdUtils.uuid());
     }
 
     public static CategoryID from(final String anId) {
         return new CategoryID(anId);
-    }
-
-    public static CategoryID from(final UUID anId) {
-        return new CategoryID(anId.toString().toLowerCase());
     }
 
     public String getValue() {

@@ -3,7 +3,6 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -28,7 +27,7 @@ public class VideoGenreJpaEntity {
 
     public static VideoGenreJpaEntity from(final VideoJpaEntity video, final GenreID genre) {
         return new VideoGenreJpaEntity(
-                VideoGenreID.from(video.getId(), UUID.fromString(genre.getValue())),
+                VideoGenreID.from(video.getId(), genre.getValue()),
                 video
         );
     }

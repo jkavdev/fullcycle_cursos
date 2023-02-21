@@ -11,6 +11,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.InternalErrorEx
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreGateway;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.IdUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -820,7 +821,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         final var aVideo = Fixture.Videos.systemDesign();
         final var aulasId = Fixture.Categories.aulas().getId();
 
-        final var expectedErrorMessage = "Some categories could not be found: %s".formatted(aulasId.getValue());
+        final var expectedErrorMessage = "some categories could not be found: %s".formatted(aulasId.getValue());
         final var expectedErrorCount = 1;
 
         final var expectedTitle = Fixture.title();
@@ -893,7 +894,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         final var aVideo = Fixture.Videos.systemDesign();
         final var techId = Fixture.Genres.tech().getId();
 
-        final var expectedErrorMessage = "Some genres could not be found: %s".formatted(techId.getValue());
+        final var expectedErrorMessage = "some genres could not be found: %s".formatted(techId.getValue());
         final var expectedErrorCount = 1;
 
         final var expectedTitle = Fixture.title();
@@ -966,7 +967,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         final var aVideo = Fixture.Videos.systemDesign();
         final var wesleyId = Fixture.CastMembers.wesley().getId();
 
-        final var expectedErrorMessage = "Some cast members could not be found: %s".formatted(wesleyId.getValue());
+        final var expectedErrorMessage = "some cast members could not be found: %s".formatted(wesleyId.getValue());
         final var expectedErrorCount = 1;
 
         final var expectedTitle = Fixture.title();
@@ -1034,10 +1035,10 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidCommand_whenCallsCreateVideoThrowsException_shouldCallClearResources() {
+    public void givenAValidCommand_whenCallsCreateVideoThrowsException_shouldCallClearResources() throws InterruptedException {
         // given
         final var aVideo = Fixture.Videos.systemDesign();
-        final var expectedErrorMessage = "An error on create video was observed [videoId:";
+        final var expectedErrorMessage = "an error on update video was observed [videoId:";
 
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.Videos.description();
@@ -1095,6 +1096,8 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         when(videoGateway.update(any()))
                 .thenThrow(new RuntimeException("Internal Server Error"));
 
+        Thread.sleep(1);
+
         // when
         final var actualResult = Assertions.assertThrows(InternalErrorException.class, () -> {
             useCase.execute(aCommand);
@@ -1110,7 +1113,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     private void mockImageMedia() {
         when(mediaResourceGateway.storeImage(any(), any())).thenAnswer(t -> {
             final var resource = t.getArgument(1, Resource.class);
-            return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+            return ImageMedia.with(IdUtils.uuid(), resource.name(), "/img");
         });
     }
 
@@ -1118,7 +1121,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         when(mediaResourceGateway.storeAudioVideo(any(), any())).thenAnswer(t -> {
             final var resource = t.getArgument(1, Resource.class);
             return AudioVideoMedia.with(
-                    UUID.randomUUID().toString(),
+                    IdUtils.uuid(),
                     resource.name(),
                     "/img",
                     "",
