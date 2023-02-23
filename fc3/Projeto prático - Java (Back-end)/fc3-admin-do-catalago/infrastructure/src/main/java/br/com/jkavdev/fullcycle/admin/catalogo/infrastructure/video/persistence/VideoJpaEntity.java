@@ -3,6 +3,7 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.CollectionUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Rating;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Video;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoID;
@@ -13,7 +14,6 @@ import java.time.Year;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
@@ -120,7 +120,9 @@ public class VideoJpaEntity {
         this.banner = banner;
         this.thumbnail = thumbnail;
         this.thumbnailHalf = thumbnailHalf;
-        this.categories = new HashSet<>();
+        this.categories = new HashSet<>(3);
+        this.genres = new HashSet<>(3);
+        this.castMembers = new HashSet<>(3);
     }
 
     public static VideoJpaEntity from(final Video aVideo) {
@@ -278,11 +280,28 @@ public class VideoJpaEntity {
         return categories;
     }
 
+    public void setCategories(Set<VideoCategoryJpaEntity> categories) {
+        System.out.println(categories);
+        this.categories = categories;
+    }
+
     public Set<VideoGenreJpaEntity> getGenres() {
         return genres;
     }
 
     public Set<VideoCastMemberJpaEntity> getCastMembers() {
         return castMembers;
+    }
+
+    public Set<CategoryID> getCategoriesID() {
+        return CollectionUtils.mapTo(getCategories(), it -> CategoryID.from(it.getId().getCategoryId()));
+    }
+
+    public Set<CastMemberID> getCastMembersID() {
+        return CollectionUtils.mapTo(getCastMembers(), it -> CastMemberID.from(it.getId().getCastMemberId()));
+    }
+
+    public Set<GenreID> getGenresID() {
+        return CollectionUtils.mapTo(getGenres(), it -> GenreID.from(it.getId().getGenreId()));
     }
 }

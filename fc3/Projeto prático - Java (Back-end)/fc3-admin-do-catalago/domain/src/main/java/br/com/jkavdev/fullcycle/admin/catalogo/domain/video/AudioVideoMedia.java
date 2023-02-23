@@ -1,10 +1,13 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.video;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.ValueObject;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.IdUtils;
 
 import java.util.Objects;
 
 public class AudioVideoMedia extends ValueObject {
+
+    private final String id;
 
     private final String checksum;
 
@@ -17,12 +20,14 @@ public class AudioVideoMedia extends ValueObject {
     private final MediaStatus status;
 
     public AudioVideoMedia(
+            final String id,
             final String checksum,
             final String name,
             final String rawLocation,
             final String encodedLocation,
             final MediaStatus status
     ) {
+        this.id = Objects.requireNonNull(id);
         this.checksum = Objects.requireNonNull(checksum);
         this.name = Objects.requireNonNull(name);
         this.rawLocation = Objects.requireNonNull(rawLocation);
@@ -33,11 +38,24 @@ public class AudioVideoMedia extends ValueObject {
     public static AudioVideoMedia with(
             final String checksum,
             final String name,
+            final String rawLocation
+    ) {
+        return new AudioVideoMedia(IdUtils.uuid(), checksum, name, rawLocation, "", MediaStatus.PENDING);
+    }
+
+    public static AudioVideoMedia with(
+            final String id,
+            final String checksum,
+            final String name,
             final String rawLocation,
             final String encodedLocation,
             final MediaStatus status
     ) {
-        return new AudioVideoMedia(checksum, name, rawLocation, encodedLocation, status);
+        return new AudioVideoMedia(id, checksum, name, rawLocation, encodedLocation, status);
+    }
+
+    public String id() {
+        return id;
     }
 
     public String checksum() {

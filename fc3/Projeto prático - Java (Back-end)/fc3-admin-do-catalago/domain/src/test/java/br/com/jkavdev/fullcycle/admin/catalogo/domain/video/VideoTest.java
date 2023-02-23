@@ -175,7 +175,7 @@ public class VideoTest {
         );
 
         final var aVideoMedia =
-                AudioVideoMedia.with("abc", "Video.mp4", "/123/videos", "", MediaStatus.PENDING);
+                AudioVideoMedia.with("id", "abc", "Video.mp4", "/123/videos", "", MediaStatus.PENDING);
 
         Thread.sleep(1);
 
@@ -239,7 +239,7 @@ public class VideoTest {
         );
 
         final var aTrailerMedia =
-                AudioVideoMedia.with("abc", "Trailer.mp4", "/123/videos", "", MediaStatus.PENDING);
+                AudioVideoMedia.with("id", "abc", "Trailer.mp4", "/123/videos", "", MediaStatus.PENDING);
 
         Thread.sleep(1);
 
