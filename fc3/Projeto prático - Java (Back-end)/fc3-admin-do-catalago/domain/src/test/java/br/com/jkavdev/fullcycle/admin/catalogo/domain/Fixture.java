@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.admin.catalogo.application;
+package br.com.jkavdev.fullcycle.admin.catalogo.domain;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberType;

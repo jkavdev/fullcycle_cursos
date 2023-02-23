@@ -1,6 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.application.Fixture;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.IdUtils;

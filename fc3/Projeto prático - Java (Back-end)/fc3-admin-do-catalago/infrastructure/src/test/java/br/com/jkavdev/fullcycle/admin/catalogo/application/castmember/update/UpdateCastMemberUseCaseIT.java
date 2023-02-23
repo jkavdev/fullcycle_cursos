@@ -1,6 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.update;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.Fixture;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.IntegrationTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberGateway;
@@ -144,7 +144,7 @@ public class UpdateCastMemberUseCaseIT {
         // given
         final var expectedId = CastMemberID.from("123");
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorMessage = "CastMember with ID 123 was not found";
 

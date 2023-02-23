@@ -1,6 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrive.list;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.application.Fixture;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.UseCaseTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrieve.list.CastMemberListOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
