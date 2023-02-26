@@ -1,5 +1,7 @@
-package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.properties;
+package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.properties.GoogleCloudProperties;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.properties.GoogleStorageProperties;
 import com.google.api.gax.retrying.RetrySettings;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
