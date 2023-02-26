@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.admin.catalogo.domain.video;
+package br.com.jkavdev.fullcycle.admin.catalogo.domain.resource;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.ValueObject;
 
@@ -6,33 +6,36 @@ import java.util.Objects;
 
 public class Resource extends ValueObject {
 
+    private final String checksum;
     private final byte[] content;
 
     private final String contentType;
 
     private final String name;
 
-    private final Type type;
-
     private Resource(
+            final String checksum,
             final byte[] content,
             final String contentType,
-            final String name,
-            final Type type
+            final String name
     ) {
+        this.checksum = Objects.requireNonNull(checksum);
         this.content = Objects.requireNonNull(content);
         this.contentType = Objects.requireNonNull(contentType);
         this.name = Objects.requireNonNull(name);
-        this.type = Objects.requireNonNull(type);
     }
 
     public static Resource with(
+            final String checksum,
             final byte[] content,
             final String contentType,
-            final String name,
-            final Type type
+            final String name
     ) {
-        return new Resource(content, contentType, name, type);
+        return new Resource(checksum, content, contentType, name);
+    }
+
+    public String checksum() {
+        return checksum;
     }
 
     public byte[] content() {
@@ -47,15 +50,4 @@ public class Resource extends ValueObject {
         return name;
     }
 
-    public Type type() {
-        return type;
-    }
-
-    public enum Type {
-        VIDEO,
-        TRAILER,
-        BANNER,
-        THUMBNAIL,
-        THUMBNAIL_HALF,
-    }
 }

@@ -4,9 +4,9 @@ import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.Genre;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Rating;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Resource;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Video;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.resource.Resource;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.IdUtils;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.*;
 import com.github.javafaker.Faker;
 
 import java.time.Year;
@@ -132,19 +132,42 @@ public final class Fixture {
             );
         }
 
-        public static Resource resource(final Resource.Type type) {
-            final String contentType = Match(type).of(
-                    Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
+        public static Resource resource(final VideoMediaType type) {
+            final var contentType = Match(type).of(
+                    Case($(List(VideoMediaType.VIDEO, VideoMediaType.TRAILER)::contains), "video/mp4"),
                     Case($(), "image/jpg")
             );
 
-            final byte[] content = "Conteudo".getBytes();
+            final var checksum = IdUtils.uuid();
+            final var content = "Conteudo".getBytes();
 
-            return Resource.with(content, contentType, type.name().toLowerCase(), type);
+            return Resource.with(checksum, content, contentType, type.name().toLowerCase());
         }
 
         public static Rating rating() {
             return FAKER.options().option(Rating.values());
+        }
+
+        public static AudioVideoMedia audioVideo(final VideoMediaType type) {
+            final var id = IdUtils.uuid();
+            final var checksum = IdUtils.uuid();
+            return AudioVideoMedia.with(
+                    id,
+                    checksum,
+                    type.name().toLowerCase(),
+                    "/videos/" + checksum,
+                    "",
+                    MediaStatus.PENDING
+            );
+        }
+
+        public static ImageMedia image(final VideoMediaType type) {
+            final var checksum = IdUtils.uuid();
+            return ImageMedia.with(
+                    checksum,
+                    type.name().toLowerCase(),
+                    "/images/" + checksum
+            );
         }
     }
 }

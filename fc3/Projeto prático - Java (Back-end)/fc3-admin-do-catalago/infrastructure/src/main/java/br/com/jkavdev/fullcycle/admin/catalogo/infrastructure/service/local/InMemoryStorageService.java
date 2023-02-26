@@ -1,6 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.service.local;
 
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.Resource;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.resource.Resource;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.service.StorageService;
 
 import java.util.*;

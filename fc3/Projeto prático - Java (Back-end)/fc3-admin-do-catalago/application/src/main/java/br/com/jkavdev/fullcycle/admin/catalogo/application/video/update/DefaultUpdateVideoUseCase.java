@@ -25,6 +25,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoMediaType.*;
+
 public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
 
     private final CategoryGateway categoryGateway;
@@ -101,23 +103,23 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
         try {
 //            TODO: criar implementacao para que nao seja alterado todo o conteudo das media se nao houver alteracoes
             final var aVideoMedia = aCommand.getVideo()
-                    .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, it))
+                    .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, VideoResource.with(it, VIDEO)))
                     .orElse(null);
 
             final var aTrailerMedia = aCommand.getTrailer()
-                    .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, it))
+                    .map(it -> this.mediaResourceGateway.storeAudioVideo(anId, VideoResource.with(it, TRAILER)))
                     .orElse(null);
 
             final var aBannerMedia = aCommand.getBanner()
-                    .map(it -> this.mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> this.mediaResourceGateway.storeImage(anId, VideoResource.with(it, BANNER)))
                     .orElse(null);
 
             final var aThumbMedia = aCommand.getThumbnail()
-                    .map(it -> this.mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> this.mediaResourceGateway.storeImage(anId, VideoResource.with(it, THUMBNAIL)))
                     .orElse(null);
 
             final var aThumbHalfMedia = aCommand.getThumbnailHalf()
-                    .map(it -> this.mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> this.mediaResourceGateway.storeImage(anId, VideoResource.with(it, THUMBNAIL_HALF)))
                     .orElse(null);
 
             return this.videoGateway.update(
