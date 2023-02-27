@@ -48,7 +48,7 @@ public class InMemoryStorageServiceTest {
     }
 
     @Test
-    public void givenInvalidResource_whenCallsGet_shouldBempty() {
+    public void givenInvalidResource_whenCallsGet_shouldBeEmpty() {
 //        given
         final var expectedName = IdUtils.uuid();
         final var expectedResource = Fixture.Videos.resource(VIDEO);
