@@ -14,6 +14,10 @@ public class InMemoryStorageService implements StorageService {
         this.storage = new ConcurrentHashMap<>();
     }
 
+    public void clear() {
+        this.storage.clear();
+    }
+
     public Map<String, Resource> storage() {
         return storage;
     }

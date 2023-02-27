@@ -148,6 +148,10 @@ public final class Fixture {
             return FAKER.options().option(Rating.values());
         }
 
+        public static VideoMediaType mediaType() {
+            return FAKER.options().option(VideoMediaType.values());
+        }
+
         public static AudioVideoMedia audioVideo(final VideoMediaType type) {
             final var id = IdUtils.uuid();
             final var checksum = IdUtils.uuid();
