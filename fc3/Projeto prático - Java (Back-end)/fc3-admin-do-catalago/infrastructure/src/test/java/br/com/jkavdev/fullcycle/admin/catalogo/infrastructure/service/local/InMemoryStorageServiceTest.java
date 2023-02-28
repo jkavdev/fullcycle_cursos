@@ -29,7 +29,9 @@ public class InMemoryStorageServiceTest {
         target.store(expectedName, expectedResource);
 
 //        then
-        Assertions.assertEquals(expectedResource, target.storage().get(expectedName));
+        final var actualContent = target.storage().get(expectedName);
+
+        Assertions.assertEquals(expectedResource, actualContent);
     }
 
     @Test
@@ -41,17 +43,18 @@ public class InMemoryStorageServiceTest {
         target.store(expectedName, expectedResource);
 
 //        when
-        final var actualResource = target.get(expectedName);
+        final var actualResource = target.get(expectedName).get();
 
 //        then
-        Assertions.assertEquals(expectedResource, target.storage().get(expectedName));
+        Assertions.assertEquals(expectedResource, actualResource);
     }
 
     @Test
     public void givenInvalidResource_whenCallsGet_shouldBeEmpty() {
 //        given
         final var expectedName = IdUtils.uuid();
-        final var expectedResource = Fixture.Videos.resource(VIDEO);
+
+        this.target.store("qualquer coisa", Fixture.Videos.resource(VIDEO));
 
 //        when
         final var actualResource = target.get(expectedName);

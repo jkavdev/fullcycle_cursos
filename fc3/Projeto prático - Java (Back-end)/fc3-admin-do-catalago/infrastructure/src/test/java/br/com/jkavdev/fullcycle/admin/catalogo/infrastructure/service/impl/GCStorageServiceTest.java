@@ -82,9 +82,7 @@ public class GCStorageServiceTest {
     public void givenInvalidResource_whenCallsGet_shouldBeEmpty() {
         // given
         final var expectedName = IdUtils.uuid();
-        final var expectedResource = Fixture.Videos.resource(VIDEO);
 
-        final var blob = mockBlob(expectedName, expectedResource);
         doReturn(null).when(storage).get(anyString(), anyString());
 
         // when
