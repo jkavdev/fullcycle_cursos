@@ -1,4 +1,7 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration # desabilitando o auto configuracao do rabbitmq, pois os testes serao mockados
   datasource:
     driver-class-name: org.h2.Driver
     username: root
