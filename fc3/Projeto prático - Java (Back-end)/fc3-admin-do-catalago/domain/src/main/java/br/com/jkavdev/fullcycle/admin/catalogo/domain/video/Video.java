@@ -3,16 +3,14 @@ package br.com.jkavdev.fullcycle.admin.catalogo.domain.video;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.AggregateRoot;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.event.DomainEvent;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.InstantUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 import java.time.Year;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Video extends AggregateRoot<VideoID> {
 
@@ -67,9 +65,10 @@ public class Video extends AggregateRoot<VideoID> {
             final AudioVideoMedia aVideo,
             final Set<CategoryID> categories,
             final Set<GenreID> genres,
-            final Set<CastMemberID> castMembers
-    ) {
-        super(anId);
+            final Set<CastMemberID> castMembers,
+            final List<DomainEvent> domainEvents
+            ) {
+        super(anId, domainEvents);
         this.title = aTitle;
         this.description = aDescription;
         this.launchedAt = aLaunchYear;
@@ -126,7 +125,8 @@ public class Video extends AggregateRoot<VideoID> {
                 null,
                 categories,
                 genres,
-                members
+                members,
+                null
         );
     }
 
@@ -168,7 +168,8 @@ public class Video extends AggregateRoot<VideoID> {
                 aVideo,
                 categories,
                 genres,
-                castMembers
+                castMembers,
+                null
         );
     }
 
@@ -191,7 +192,8 @@ public class Video extends AggregateRoot<VideoID> {
                 aVideo.getVideo().orElse(null),
                 new HashSet<>(aVideo.getCategories()),
                 new HashSet<>(aVideo.getGenres()),
-                new HashSet<>(aVideo.getCastMembers())
+                new HashSet<>(aVideo.getCastMembers()),
+                aVideo.getDomainEvents()
         );
     }
 
