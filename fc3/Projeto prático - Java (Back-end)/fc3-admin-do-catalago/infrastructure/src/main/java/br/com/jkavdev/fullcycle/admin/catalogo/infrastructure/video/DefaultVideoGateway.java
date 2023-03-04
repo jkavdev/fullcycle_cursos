@@ -3,6 +3,8 @@ package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.Identifier;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.*;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration.annotations.VideoCreatedQueue;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.service.EventService;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.utils.SqlUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence.VideoJpaEntity;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.persistence.VideoRepository;
@@ -22,8 +24,14 @@ public class DefaultVideoGateway implements VideoGateway {
 
     private final VideoRepository videoRepository;
 
-    public DefaultVideoGateway(final VideoRepository videoRepository) {
+    private final EventService eventService;
+
+    public DefaultVideoGateway(
+            final VideoRepository videoRepository,
+            @VideoCreatedQueue final EventService eventService
+    ) {
         this.videoRepository = Objects.requireNonNull(videoRepository);
+        this.eventService = Objects.requireNonNull(eventService);
     }
 
     @Override
@@ -80,7 +88,11 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     private Video save(final Video aVideo) {
-        return this.videoRepository.save(VideoJpaEntity.from(aVideo))
+        final var result = this.videoRepository.save(VideoJpaEntity.from(aVideo))
                 .toAggregate();
+
+        aVideo.publishDomainEvents(this.eventService::send);
+
+        return result;
     }
 }
