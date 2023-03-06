@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@ActiveProfiles("test-integration")
+@ActiveProfiles("integration")
 @SpringBootTest(classes = WebServerConfig.class)
 @Tag("integrationTest")
 public @interface AmqpTest {
