@@ -9,6 +9,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.Video
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.VideoEncoderResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +20,15 @@ public class VideoEncoderListener {
 
     private static final Logger log = LoggerFactory.getLogger(VideoEncoderListener.class);
 
+    static final String LISTENER_ID = "videoEncodedListener";
+
     private final UpdateMediaStatusUseCase updateMediaStatusUseCase;
 
     public VideoEncoderListener(final UpdateMediaStatusUseCase updateMediaStatusUseCase) {
         this.updateMediaStatusUseCase = Objects.requireNonNull(updateMediaStatusUseCase);
     }
 
+    @RabbitListener(id = LISTENER_ID, queues = "${amqp.queues.video-encoded.queue}")
     public void onVideoEncodedMessage(@Payload final String message) {
         final var aResult = Json.readValue(message, VideoEncoderResult.class);
 
