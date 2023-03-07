@@ -1,9 +1,47 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Set;
 
 @RequestMapping("videos")
 @Tag(name = "Video")
 public interface VideoAPI {
+
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Create a new video with medias")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created successfully"),
+            @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    ResponseEntity<?> createFull(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "year_launched", required = false) Integer yearLaunched,
+            @RequestParam(value = "duration", required = false) Double duration,
+            @RequestParam(value = "opened", required = false) Boolean opened,
+            @RequestParam(value = "published", required = false) Boolean published,
+            @RequestParam(value = "rating", required = false) String rating,
+            @RequestParam(value = "cast_members_id", required = false) Set<String> castMembers,
+            @RequestParam(value = "categories_id", required = false) Set<String> categories,
+            @RequestParam(value = "genres_id", required = false) Set<String> genres,
+            @RequestParam(value = "video_file", required = false) MultipartFile videoFile,
+            @RequestParam(value = "trailer_file", required = false) MultipartFile trailerFile,
+            @RequestParam(value = "banner_file", required = false) MultipartFile bannerFile,
+            @RequestParam(value = "thumb_file", required = false) MultipartFile thumbFile,
+            @RequestParam(value = "thumb_half_file", required = false) MultipartFile thumbHalfFile
+    );
 }
