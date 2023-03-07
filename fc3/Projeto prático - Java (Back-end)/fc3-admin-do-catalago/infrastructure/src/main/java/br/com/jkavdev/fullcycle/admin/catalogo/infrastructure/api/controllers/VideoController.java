@@ -5,6 +5,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVi
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.resource.Resource;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.VideoAPI;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.utils.HashingUtils;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.CreateVideoRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,6 +57,26 @@ public class VideoController implements VideoAPI {
                 resourceOf(bannerFile),
                 resourceOf(thumbFile),
                 resourceOf(thumbHalfFile)
+        );
+
+        final var output = this.createVideoUseCase.execute(aCmd);
+
+        return ResponseEntity.created(URI.create("/videos/" + output.id())).body(output);
+    }
+
+    @Override
+    public ResponseEntity<?> createPartial(final CreateVideoRequest payload) {
+        final var aCmd = CreateVideoCommand.with(
+                payload.title(),
+                payload.description(),
+                payload.yearLaunched(),
+                payload.duration(),
+                payload.opened(),
+                payload.published(),
+                payload.rating(),
+                payload.categories(),
+                payload.genres(),
+                payload.castMembers()
         );
 
         final var output = this.createVideoUseCase.execute(aCmd);
