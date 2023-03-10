@@ -4,6 +4,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.ControllerTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVideoCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVideoOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVideoUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.video.delete.DeleteVideoUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get.GetVideoByIdUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get.VideoOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.update.UpdateVideoCommand;
@@ -39,8 +40,7 @@ import static br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.CollectionUti
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -62,6 +62,9 @@ public class VideoAPITest {
 
     @MockBean
     private GetVideoByIdUseCase getVideoByIdUseCase;
+
+    @MockBean
+    private DeleteVideoUseCase deleteVideoUseCase;
 
     @Test
     public void givenAValidCommand_whenCallsCreateFull_shouldReturnAnId() throws Exception {
@@ -445,5 +448,21 @@ public class VideoAPITest {
                 .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
 
         verify(updateVideoUseCase).execute(any());
+    }
+
+    public void givenAValidId_whenCallsDeleteById_shouldDeleteIt() throws Exception {
+        // given
+        final var expectedId = VideoID.unique();
+        doNothing().when(deleteVideoUseCase).execute(any());
+
+        // when
+        final var aRequest = delete("/videos/{id}", expectedId.getValue());
+
+        final var response = this.mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isNoContent());
+
+        verify(deleteVideoUseCase).execute(eq(expectedId.getValue()));
     }
 }
