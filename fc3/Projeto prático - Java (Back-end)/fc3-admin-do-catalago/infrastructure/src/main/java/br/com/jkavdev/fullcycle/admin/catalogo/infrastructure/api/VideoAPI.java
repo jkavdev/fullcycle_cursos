@@ -1,7 +1,9 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.CreateVideoRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.UpdateVideoRequest;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.VideoListResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.VideoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -96,4 +98,22 @@ public interface VideoAPI {
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     void deleteById(@PathVariable(name = "id") String id);
+
+    @GetMapping
+    @Operation(summary = "List all videos paginated")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listed successfully"),
+            @ApiResponse(responseCode = "422", description = "A query param was invalid"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Pagination<VideoListResponse> list(
+            @RequestParam(name = "search", required = false, defaultValue = "") final String search,
+            @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
+            @RequestParam(name = "perPage", required = false, defaultValue = "25") final int perPage,
+            @RequestParam(name = "sort", required = false, defaultValue = "title") final String sort,
+            @RequestParam(name = "dir", required = false, defaultValue = "asc") final String direction,
+            @RequestParam(name = "categories_id", required = false, defaultValue = "") Set<String> categories,
+            @RequestParam(name = "cast_members_id", required = false, defaultValue = "") Set<String> castMembers,
+            @RequestParam(name = "genres_id", required = false, defaultValue = "") Set<String> genres
+    );
 }

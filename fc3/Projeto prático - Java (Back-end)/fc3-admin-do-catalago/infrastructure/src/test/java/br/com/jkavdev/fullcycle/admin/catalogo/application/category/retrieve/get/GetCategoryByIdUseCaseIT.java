@@ -52,7 +52,7 @@ public class GetCategoryByIdUseCaseIT {
 //        TODO: da erro ao comparar as datas de criacao
 //        Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt());
 //        Assertions.assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt());
-//        Assertions.assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
+//        Assertions.assertEquals(aCategory.getDeletedAt(), actualCategory.updatedAt());
     }
 
     @Test

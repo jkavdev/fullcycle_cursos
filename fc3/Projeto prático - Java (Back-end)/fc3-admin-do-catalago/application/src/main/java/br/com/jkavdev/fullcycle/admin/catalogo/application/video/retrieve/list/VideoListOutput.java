@@ -12,7 +12,7 @@ public record VideoListOutput(
         String title,
         String description,
         Instant createdAt,
-        Instant deletedAt
+        Instant updatedAt
 ) {
 
     public static VideoListOutput from(

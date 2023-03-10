@@ -4,13 +4,20 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVi
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVideoUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.delete.DeleteVideoUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get.GetVideoByIdUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.list.ListVideosUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.update.UpdateVideoCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.update.UpdateVideoUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.resource.Resource;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoSearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.VideoAPI;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.utils.HashingUtils;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.CreateVideoRequest;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.UpdateVideoRequest;
+import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.VideoListResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.models.VideoResponse;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.presenters.VideoApiPresenter;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URI;
 import java.util.Objects;
 import java.util.Set;
+
+import static br.com.jkavdev.fullcycle.admin.catalogo.domain.utils.CollectionUtils.mapTo;
 
 @RestController
 public class VideoController implements VideoAPI {
@@ -32,16 +41,20 @@ public class VideoController implements VideoAPI {
 
     private final DeleteVideoUseCase deleteVideoUseCase;
 
+    private final ListVideosUseCase listVideosUseCase;
+
     public VideoController(
             final CreateVideoUseCase createVideoUseCase,
             final GetVideoByIdUseCase getVideoByIdUseCase,
             final UpdateVideoUseCase updateVideoUseCase,
-            final DeleteVideoUseCase deleteVideoUseCase
+            final DeleteVideoUseCase deleteVideoUseCase,
+            final ListVideosUseCase listVideosUseCase
     ) {
         this.createVideoUseCase = Objects.requireNonNull(createVideoUseCase);
         this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
         this.updateVideoUseCase = Objects.requireNonNull(updateVideoUseCase);
         this.deleteVideoUseCase = Objects.requireNonNull(deleteVideoUseCase);
+        this.listVideosUseCase = Objects.requireNonNull(listVideosUseCase);
     }
 
     @Override
@@ -136,6 +149,27 @@ public class VideoController implements VideoAPI {
     @Override
     public void deleteById(final String id) {
         this.deleteVideoUseCase.execute(id);
+    }
+
+    @Override
+    public Pagination<VideoListResponse> list(
+            final String search,
+            final int page,
+            final int perPage,
+            final String sort,
+            final String direction,
+            final Set<String> categories,
+            final Set<String> castMembers,
+            final Set<String> genres
+    ) {
+
+        final var categoriesIds = mapTo(categories, CategoryID::from);
+        final var genresIds = mapTo(genres, GenreID::from);
+        final var castMembersIds = mapTo(castMembers, CastMemberID::from);
+
+        final var aQuery = new VideoSearchQuery(page, perPage, search, sort, direction, categoriesIds, genresIds, castMembersIds);
+
+        return VideoApiPresenter.present(this.listVideosUseCase.execute(aQuery));
     }
 
     private Resource resourceOf(final MultipartFile part) {
