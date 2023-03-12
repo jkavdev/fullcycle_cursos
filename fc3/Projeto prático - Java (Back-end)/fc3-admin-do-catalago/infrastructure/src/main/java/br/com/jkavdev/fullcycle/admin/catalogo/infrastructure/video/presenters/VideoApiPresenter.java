@@ -1,5 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.video.presenters;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.application.video.media.upload.UploadMediaOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get.VideoOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.list.VideoListOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.update.UpdateVideoOutput;
@@ -77,5 +78,9 @@ public interface VideoApiPresenter {
 
     static Pagination<VideoListResponse> present(final Pagination<VideoListOutput> page) {
         return page.map(VideoApiPresenter::present);
+    }
+
+    static UploadMediaResponse present(UploadMediaOutput output) {
+        return new UploadMediaResponse(output.videoId(), output.mediaType());
     }
 }

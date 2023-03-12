@@ -5,15 +5,21 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.video.create.CreateVi
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.delete.DeleteVideoUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.media.get.GetMediaCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.media.get.GetMediaUseCase;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.video.media.upload.UploadMediaCommand;
+import br.com.jkavdev.fullcycle.admin.catalogo.application.video.media.upload.UploadMediaUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.get.GetVideoByIdUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.retrieve.list.ListVideosUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.update.UpdateVideoCommand;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.video.update.UpdateVideoUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.genre.GenreID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.resource.Resource;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.Error;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoMediaType;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoResource;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.video.VideoSearchQuery;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api.VideoAPI;
 import br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.utils.HashingUtils;
@@ -49,13 +55,16 @@ public class VideoController implements VideoAPI {
 
     private final GetMediaUseCase getMediaUseCase;
 
+    private final UploadMediaUseCase uploadMediaUseCase;
+
     public VideoController(
             final CreateVideoUseCase createVideoUseCase,
             final GetVideoByIdUseCase getVideoByIdUseCase,
             final UpdateVideoUseCase updateVideoUseCase,
             final DeleteVideoUseCase deleteVideoUseCase,
             final ListVideosUseCase listVideosUseCase,
-            final GetMediaUseCase getMediaUseCase
+            final GetMediaUseCase getMediaUseCase,
+            final UploadMediaUseCase uploadMediaUseCase
     ) {
         this.createVideoUseCase = Objects.requireNonNull(createVideoUseCase);
         this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
@@ -63,6 +72,7 @@ public class VideoController implements VideoAPI {
         this.deleteVideoUseCase = Objects.requireNonNull(deleteVideoUseCase);
         this.listVideosUseCase = Objects.requireNonNull(listVideosUseCase);
         this.getMediaUseCase = Objects.requireNonNull(getMediaUseCase);
+        this.uploadMediaUseCase = Objects.requireNonNull(uploadMediaUseCase);
     }
 
     @Override
@@ -190,6 +200,24 @@ public class VideoController implements VideoAPI {
                 .contentLength(aMedia.content().length)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=%s".formatted(aMedia.name()))
                 .body(aMedia.content());
+    }
+
+    @Override
+    public ResponseEntity<?> uploadMediaByType(
+            final String id,
+            final String type,
+            final MultipartFile media
+    ) {
+        final var aType = VideoMediaType.of(type)
+                .orElseThrow(() -> NotificationException.with(new Error("invalid %s for VideoMediaType".formatted(type))));
+
+        final var aCmd = UploadMediaCommand.with(id, VideoResource.with(resourceOf(media), aType));
+
+        final var output = this.uploadMediaUseCase.execute(aCmd);
+
+        return ResponseEntity
+                .created(URI.create("/videos/%s/medias/%s".formatted(id, type)))
+                .body(VideoApiPresenter.present(output));
     }
 
     private Resource resourceOf(final MultipartFile part) {
