@@ -116,4 +116,19 @@ public interface VideoAPI {
             @RequestParam(name = "cast_members_id", required = false, defaultValue = "") Set<String> castMembers,
             @RequestParam(name = "genres_id", required = false, defaultValue = "") Set<String> genres
     );
+
+    @GetMapping(
+            value = "{id}/medias/{type}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Get a media by it's type")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Media retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Video was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    ResponseEntity<byte[]> getMediaByType(
+            @PathVariable(name = "id") final String id,
+            @PathVariable(name = "type") final String type
+    );
 }
