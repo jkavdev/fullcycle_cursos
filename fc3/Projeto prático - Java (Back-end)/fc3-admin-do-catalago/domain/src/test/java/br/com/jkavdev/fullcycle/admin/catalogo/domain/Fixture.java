@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static io.vavr.API.*;
 
-public final class Fixture {
+public final class Fixture extends UnitTest {
 
     private static final Faker FAKER = new Faker();
 

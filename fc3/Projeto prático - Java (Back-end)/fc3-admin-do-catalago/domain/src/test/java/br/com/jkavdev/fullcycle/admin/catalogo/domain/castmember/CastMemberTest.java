@@ -1,10 +1,11 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.UnitTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CastMemberTest {
+public class CastMemberTest extends UnitTest {
 
     @Test
     public void givenAValidParams_whenCallsNewMember_thenInstantiateACastMember() {

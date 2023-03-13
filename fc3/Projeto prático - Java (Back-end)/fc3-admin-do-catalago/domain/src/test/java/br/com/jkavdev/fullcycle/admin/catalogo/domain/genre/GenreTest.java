@@ -1,5 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.genre;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.UnitTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.category.CategoryID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenreTest {
+public class GenreTest extends UnitTest {
 
     @Test
     public void givenValidParams_whenCallNewGenre_shouldInstantiateAGenre() {

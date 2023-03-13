@@ -1,5 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,6 +26,7 @@ import java.lang.annotation.*;
 )
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter
 @ExtendWith(MySQLCleanUpExtension.class)
+@Tag("integrationTests")
 public @interface MysqlGatewayTest {
 
 }

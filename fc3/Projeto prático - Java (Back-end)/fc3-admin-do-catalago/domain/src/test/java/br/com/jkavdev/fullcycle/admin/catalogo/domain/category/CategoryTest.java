@@ -1,11 +1,12 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.domain.category;
 
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.UnitTest;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.exceptions.DomainException;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CategoryTest {
+public class CategoryTest extends UnitTest {
 
     @Test
     public void givenAValidParams_whenCallNewACategory_thenInstantiateACategory() {

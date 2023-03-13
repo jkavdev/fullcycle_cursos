@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Inherited
 @ActiveProfiles("integration")
 @SpringBootTest(classes = WebServerConfig.class)
-@Tag("integrationTest")
+@Tag("integrationTests")
 public @interface AmqpTest {
 }
