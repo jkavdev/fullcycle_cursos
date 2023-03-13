@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component
 public class CastMemberMysqlGateway implements CastMemberGateway {
@@ -58,7 +59,7 @@ public class CastMemberMysqlGateway implements CastMemberGateway {
                 Sort.by(Sort.Direction.fromString(aQuery.direction()), aQuery.sort())
         );
 
-        final var where  = Optional.ofNullable(aQuery.terms())
+        final var where = Optional.ofNullable(aQuery.terms())
                 .filter(s -> !s.isBlank())
                 .map(this::assembleSpecification)
                 .orElse(null);
@@ -75,8 +76,13 @@ public class CastMemberMysqlGateway implements CastMemberGateway {
     }
 
     @Override
-    public List<CastMemberID> existsByIds(Iterable<CastMemberID> ids) {
-        throw new UnsupportedOperationException();
+    public List<CastMemberID> existsByIds(Iterable<CastMemberID> membersIDs) {
+        final var ids = StreamSupport.stream(membersIDs.spliterator(), false)
+                .map(CastMemberID::getValue)
+                .toList();
+        return castMemberRepository.existsByIds(ids).stream()
+                .map(CastMemberID::from)
+                .toList();
     }
 
     private Specification<CastMemberJpaEntity> assembleSpecification(final String terms) {
