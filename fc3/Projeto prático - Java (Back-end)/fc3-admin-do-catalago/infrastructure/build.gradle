@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-    id 'java'
+    id 'java-conventions'
 //    adicionando plugin que fornece facilidades para rodar a aplicacao
     id 'application'
     //    plugins do spring e spring boot
@@ -18,15 +18,10 @@ plugins {
 }
 
 group 'br.com.jkavdev.fullcycle.admin.catalogo.infrastructure'
-version '1.0-SNAPSHOT'
 
 bootJar {
     archiveName 'application.jar'
     destinationDirectory.set(file("${rootProject.buildDir}/libs"))
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -35,9 +30,6 @@ dependencies {
 
     implementation 'com.google.cloud:google-cloud-storage:2.19.0'
     implementation 'com.google.guava:guava:31.1-jre'
-
-
-    implementation 'io.vavr:vavr:0.10.4'
 
     implementation 'mysql:mysql-connector-java'
 
@@ -73,8 +65,4 @@ flyway {
     user = System.getenv('FLYWAY_USER') ?: 'root'
     password = System.getenv('FLYWAY_PASS') ?: '123456'
     cleanDisabled = false
-}
-
-test {
-    useJUnitPlatform()
 }
