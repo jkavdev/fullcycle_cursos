@@ -1,20 +1,11 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.flywaydb:flyway-mysql:9.12.0'
-    }
-}
-
 plugins {
     id 'java-conventions'
     id 'jacoco-report-aggregation'
 //    adicionando plugin que fornece facilidades para rodar a aplicacao
     id 'application'
     //    plugins do spring e spring boot
-    id 'org.springframework.boot' version '2.6.7'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.9'
+    id 'io.spring.dependency-management' version '1.1.0'
     id 'org.flywaydb.flyway' version '9.12.0'
 }
 
@@ -29,13 +20,13 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
-    implementation 'com.google.cloud:google-cloud-storage:2.19.0'
+    implementation 'com.google.cloud:google-cloud-storage:2.20.1'
     implementation 'com.google.guava:guava:31.1-jre'
 
-    implementation 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java:8.0.32'
 
-    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.8'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
+    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.15'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 
 //    utilizando o servidor undertow, por se mostrar mais performatico que o tomcat
     implementation('org.springframework.boot:spring-boot-starter-web') {
@@ -47,12 +38,18 @@ dependencies {
 
     implementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
 
+//    a versao 2.0 da erro
+    implementation('org.yaml:snakeyaml:1.33') {
+        version {strictly('1.33')}
+    }
+
     testImplementation(project(path: ':domain', configuration: 'testClasses'))
 
     testImplementation 'org.flywaydb:flyway-core'
+    testImplementation 'org.flywaydb:flyway-mysql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation('org.springframework.amqp:spring-rabbit-test:2.4.9')
+    testImplementation('org.springframework.amqp:spring-rabbit-test:2.4.10')
 
     testImplementation 'org.testcontainers:testcontainers:1.17.6'
     testImplementation 'org.testcontainers:mysql:1.17.6'
