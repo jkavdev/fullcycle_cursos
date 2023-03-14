@@ -85,7 +85,7 @@ public class GenreResponseTest {
                 .hasFieldOrPropertyWithValue("categories", List.of(expectedCategory))
                 .hasFieldOrPropertyWithValue("active", expectedIsActive)
                 .hasFieldOrPropertyWithValue("createdAt", expectedCreatedAt)
-                .hasFieldOrPropertyWithValue("updatedAt", expectedDeletedAt)
+                .hasFieldOrPropertyWithValue("deletedAt", expectedDeletedAt)
                 .hasFieldOrPropertyWithValue("updatedAt", expectedUpdatedAt);
     }
 

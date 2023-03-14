@@ -83,7 +83,7 @@ public class CategoryResponseTest {
                 .hasFieldOrPropertyWithValue("description", expectedDescription)
                 .hasFieldOrPropertyWithValue("active", expectedIsActive)
                 .hasFieldOrPropertyWithValue("createdAt", expectedCreatedAt)
-                .hasFieldOrPropertyWithValue("updatedAt", expectedDeletedAt)
+                .hasFieldOrPropertyWithValue("deletedAt", expectedDeletedAt)
                 .hasFieldOrPropertyWithValue("updatedAt", expectedUpdatedAt);
     }
 
