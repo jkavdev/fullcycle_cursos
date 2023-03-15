@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17.0.6_10-jre-alpine
 
-ARG src="./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago/build/libs/*.jar"
+ARG src="fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago/build/libs/*.jar"
 
 # copiando o jar gerado para a imagem
 COPY ${src} /opt/app/application.jar
