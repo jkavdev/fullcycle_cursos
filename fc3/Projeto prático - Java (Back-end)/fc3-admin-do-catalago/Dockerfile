@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17.0.6_10-jre-alpine
 
-WORKDIR /home/runner/work/fullcycle_cursos/fullcycle_cursos/fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
+# WORKDIR /home/runner/work/fullcycle_cursos/fullcycle_cursos/fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
 
 # ARG src="fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago/build/libs/*.jar"
 # ARG src="/home/runner/work/fullcycle_cursos/fullcycle_cursos/fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago/build/libs/*.jar"
