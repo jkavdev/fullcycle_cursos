@@ -4,6 +4,8 @@ services:
   app:
     container_name: adm_videos_app
     build: .
+#    rodando a aplicacao disponibilizada no docker hub
+#    image: jkavdev/fc3-admin-catalogo-de-videos-java:main-31
     profiles: ["app"]
     restart: unless-stopped
     env_file:
