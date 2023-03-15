@@ -50,6 +50,8 @@ jobs:
     steps:
       # 1. Check-out do código fonte
       - uses: actions/checkout@v3
+        with:
+          working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
 
       # 2. Configurar a JDK na máquina
       - name: Set up JDK@17
@@ -67,7 +69,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.4.0
         with:
           working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
-          args: clean build -x test
+          args: echo "AQUIIIIIIIIIIIIIIIIIIII" && clean build -x test
 
       # 5. Definir a variavel branch name
       - name: Set BUILD_TAG
@@ -98,7 +100,7 @@ jobs:
       - name: Build & push da imagem do docker
         uses: docker/build-push-action@v4
         with:
-          working-directory: fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
+          working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
           file: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago/Dockerfile
           context: .
           push: true
