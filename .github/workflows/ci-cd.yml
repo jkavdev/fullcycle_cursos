@@ -41,7 +41,7 @@ jobs:
   # Job para buildar a aplicacao
   build:
     name: Build runner
-    # needs: tests
+    needs: tests
     runs-on: ubuntu-latest
     defaults:
       run:
