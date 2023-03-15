@@ -100,4 +100,4 @@ jobs:
           context: .
           push: true
           build-args: VERSION=${{ env.BUILD_TAG }}
-          tags: ${{ env.IMAGE_NAME }}:${{ env.BUILD_TAG }}
+          tags: jkavdev/admin-vdeidos
