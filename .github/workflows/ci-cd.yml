@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: jkavdev/fc3-admin-catalogo-de-videos-java  
 
 jobs:
-  # Job para a execução dos testes
+  # # Job para a execução dos testes
   # tests:
   #   name: Tests runner
   #   runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
   # Job para buildar a aplicacao
   build:
     name: Build runner
-    # needs: tests
+    needs: tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -95,10 +95,10 @@ jobs:
 
       # 8. Build & Deploy da imagem
       - name: Build & push da imagem do docker
-        uses: docker/build-push-action@v4      
+        uses: docker/build-push-action@v4
         with:
-          working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago  
+          working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
           context: .
           push: true
-          # build-args: VERSION=${{ env.BUILD_TAG }}
-          tags: jkavdev/admin-vdeidos
+          build-args: VERSION=${{ env.BUILD_TAG }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.BUILD_TAG }}
