@@ -95,10 +95,9 @@ jobs:
 
       # 8. Build & Deploy da imagem
       - name: Build & push da imagem do docker
-        uses: docker/build-push-action@v4        
+        uses: docker/build-push-action@v4      
+        working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago  
         with:
-          script: | 
-            ls
           context: .
           push: true
           # build-args: VERSION=${{ env.BUILD_TAG }}
