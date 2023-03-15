@@ -66,6 +66,7 @@ jobs:
       - name: Build da aplicacao
         uses: gradle/gradle-build-action@v2.4.0
         with:
+          working-directory: ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
           args: clean build -x test
 
       # 5. Definir a variavel branch name

@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17.0.6_10-jre-alpine
 
-WORKDIR fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
+WORKDIR ./fc3/Projeto prático - Java (Back-end)/fc3-admin-do-catalago
 
 # copiando o jar gerado para a imagem
 COPY build/libs/*.jar /opt/app/application.jar
