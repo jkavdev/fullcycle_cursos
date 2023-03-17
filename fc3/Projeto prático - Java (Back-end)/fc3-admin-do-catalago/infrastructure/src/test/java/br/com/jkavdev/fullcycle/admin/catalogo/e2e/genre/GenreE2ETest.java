@@ -19,6 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
+import static br.com.jkavdev.fullcycle.admin.catalogo.ApiTest.ADMIN_JWT;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -212,6 +213,7 @@ public class GenreE2ETest implements MockDsl {
         Assertions.assertEquals(0, genreRepository.count());
 
         final var aRequest = get("/genres/123")
+                .with(ADMIN_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 

@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Objects;
 
+import static br.com.jkavdev.fullcycle.admin.catalogo.ApiTest.GENRES_JWT;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -76,11 +77,12 @@ public class GenreAPITest {
                 .thenReturn(CreateGenreOutput.from(expectedId));
 
         // when
-        final var request = post("/genres")
+        final var aRequest = post("/genres")
+                .with(GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
-        final var response = this.mvc.perform(request)
+        final var response = this.mvc.perform(aRequest)
                 .andDo(print());
 
         // then
@@ -112,6 +114,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = post("/genres")
+                .with(GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
@@ -153,6 +156,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = get("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -183,6 +187,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = get("/genres/{id}", expectedId.getValue())
+                .with(GENRES_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -214,6 +219,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = put("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
@@ -251,6 +257,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = put("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
@@ -280,6 +287,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = delete("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .accept(MediaType.APPLICATION_JSON);
 
         final var result = this.mvc.perform(aRequest);
@@ -311,6 +319,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = get("/genres")
+                .with(GENRES_JWT)
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("sort", expectedSort)

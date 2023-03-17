@@ -16,6 +16,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static br.com.jkavdev.fullcycle.admin.catalogo.ApiTest.ADMIN_JWT;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -176,6 +177,7 @@ public class CategoryE2ETest implements MockDsl {
         Assertions.assertEquals(0, categoryRepository.count());
 
         final var aRequest = get("/categories/123")
+                .with(ADMIN_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 

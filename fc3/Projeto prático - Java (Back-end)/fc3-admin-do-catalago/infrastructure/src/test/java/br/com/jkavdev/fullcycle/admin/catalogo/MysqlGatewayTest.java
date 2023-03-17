@@ -20,8 +20,11 @@ import java.lang.annotation.*;
 // escaneando apenas os beans jpa
 @ComponentScan(
         basePackages = "br.com.jkavdev.fullcycle.admin.catalogo",
+        // informando para nao usar as classes beans configuradas no projeto
+        // utilizando apenas as classes que forem indicadas abaixo, no caso os repositorios
+        useDefaultFilters = false,
         includeFilters = {
-                @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MysqlGateway]")
+                @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*MysqlGateway")
         }
 )
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter

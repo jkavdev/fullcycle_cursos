@@ -1,7 +1,6 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.api;
 
 import br.com.jkavdev.fullcycle.admin.catalogo.ControllerTest;
-import br.com.jkavdev.fullcycle.admin.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.create.CreateCastMemberOutput;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.create.DefaultCreateCastMemberUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.delete.DefaultDeleteCastMemberUseCase;
@@ -11,6 +10,7 @@ import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrieve.l
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import br.com.jkavdev.fullcycle.admin.catalogo.application.castmember.update.UpdateCastMemberOutput;
+import br.com.jkavdev.fullcycle.admin.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMember;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberID;
 import br.com.jkavdev.fullcycle.admin.catalogo.domain.castmember.CastMemberType;
@@ -30,11 +30,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Objects;
 
+import static br.com.jkavdev.fullcycle.admin.catalogo.ApiTest.CAST_MEMBERS_JWT;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -77,6 +77,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = post("/cast_members")
+                .with(CAST_MEMBERS_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -111,6 +112,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = post("/cast_members")
+                .with(CAST_MEMBERS_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -144,6 +146,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = get("/cast_members/{id}", expectedId)
+                .with(CAST_MEMBERS_JWT)
                 .accept(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(aRequest);
@@ -171,6 +174,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = get("/cast_members/{id}", expectedId.getValue())
+                .with(CAST_MEMBERS_JWT)
                 .accept(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(aRequest);
@@ -200,6 +204,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = put("/cast_members/{id}", expectedId.getValue())
+                .with(CAST_MEMBERS_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -237,6 +242,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = put("/cast_members/{id}", expectedId.getValue())
+                .with(CAST_MEMBERS_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -275,6 +281,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = put("/cast_members/{id}", expectedId.getValue())
+                .with(CAST_MEMBERS_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -303,7 +310,8 @@ public class CastMemberAPITest {
                 .when(deleteCastMemberUseCase).execute(any());
 
         // when
-        final var aRequest = delete("/cast_members/{id}", expectedId);
+        final var aRequest = delete("/cast_members/{id}", expectedId)
+                .with(CAST_MEMBERS_JWT);
 
         final var response = this.mvc.perform(aRequest);
 
@@ -334,6 +342,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = get("/cast_members")
+                .with(CAST_MEMBERS_JWT)
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("search", expectedTerms)
@@ -384,6 +393,7 @@ public class CastMemberAPITest {
 
         // when
         final var aRequest = get("/cast_members")
+                .with(CAST_MEMBERS_JWT)
                 .accept(MediaType.APPLICATION_JSON);
 
         final var response = this.mvc.perform(aRequest);
