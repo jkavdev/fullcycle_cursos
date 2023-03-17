@@ -1,6 +1,7 @@
 package br.com.jkavdev.fullcycle.admin.catalogo.infrastructure.configuration;
 
-import com.google.gson.JsonObject;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     public static final String ROLE_CATEGORIES = "CATALAGO_CATEGORIES";
     public static final String ROLE_CAST_MEMBERS = "CATALAGO_CAST_MEMBERS";
 
+    @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> {
@@ -43,6 +45,10 @@ public class SecurityConfig {
                             .antMatchers("/genres*").hasAnyRole(ROLE_ADMIN, ROLE_GENRES)
                             .antMatchers("/videos*").hasAnyRole(ROLE_ADMIN, ROLE_VIDEOS)
                             .anyRequest().hasAnyRole(ROLE_ADMIN);
+                })
+                .oauth2ResourceServer(oauth -> {
+                    oauth.jwt()
+                            .jwtAuthenticationConverter(new KeycloakJwtConverter());
                 })
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -81,6 +87,7 @@ public class SecurityConfig {
         private static final String REALM_ACCESS = "realm_access";
         private static final String RESOURCE_ACCESS = "resource_access";
         private static final String SEPARATOR = "_";
+        public static final String ROLE_PREFIX = "ROLE_"; // padrao do spring ter role_ como prefixo
 
         @Override
         public Collection<GrantedAuthority> convert(final Jwt jwt) {
@@ -89,7 +96,7 @@ public class SecurityConfig {
             final var resourceRoles = extractResourceRoles(jwt);
 
             return Stream.concat(realmRoles, resourceRoles)
-                    .map(role -> new SimpleGrantedAuthority(role.toUpperCase()))
+                    .map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role.toUpperCase()))
                     .collect(Collectors.toSet());
         }
 
@@ -97,7 +104,7 @@ public class SecurityConfig {
             final Function<Map.Entry<String, Object>, Stream<String>> mapResource =
                     resource -> {
                         final var key = resource.getKey();
-                        final var value = (JsonObject) resource.getValue();
+                        final var value = (JSONObject) resource.getValue();
                         final var roles = (Collection<String>) value.get(ROLES);
                         return roles.stream().map(role -> key.concat(SEPARATOR).concat(role));
                     };

@@ -785,6 +785,199 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "security",
+					"item": [
+						{
+							"name": "keycloak login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable('refresh_token', jsonData.refresh_token);\r",
+											"postman.setEnvironmentVariable('access_token', jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "password",
+											"type": "text"
+										},
+										{
+											"key": "client_id",
+											"value": "fc3-admin-do-catalogo",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "A6mOQi8eodIMjsMXmI5dNu3jbNbqtriN",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "outro",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123456",
+											"type": "text"
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{keycloak}}/realms/{{realm}}/protocol/openid-connect/token",
+									"host": [
+										"{{keycloak}}"
+									],
+									"path": [
+										"realms",
+										"{{realm}}",
+										"protocol",
+										"openid-connect",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "keycloak endpoints",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable('refresh_token', jsonData.refresh_token);\r",
+											"postman.setEnvironmentVariable('access_token', jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{keycloak}}/realms/{{realm}}/.well-known/openid-configuration",
+									"host": [
+										"{{keycloak}}"
+									],
+									"path": [
+										"realms",
+										"{{realm}}",
+										".well-known",
+										"openid-configuration"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{catalogo_videos_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const urlSSO = pm.variables.get(\"url_login_token\");",
+							"const username = pm.variables.get(\"user_name\");",
+							"const password = pm.variables.get(\"user_password\");",
+							"const id = pm.variables.get(\"client_id\");",
+							"const secret = pm.variables.get(\"client_secret\");",
+							"",
+							"/*",
+							"POST TOKEN SPI",
+							"*/",
+							"pm.sendRequest({",
+							"  url: urlSSO,",
+							"  method: 'POST',",
+							"  header: {",
+							"    'Content-Type': 'application/x-www-form-urlencoded'",
+							"  },",
+							"  body: {",
+							"    mode: 'urlencoded',",
+							"    urlencoded: [",
+							"      {",
+							"        'key': 'grant_type',",
+							"        'value': 'password'",
+							"      },",
+							"      {",
+							"        'key': 'client_id',",
+							"        'value': id",
+							"      },",
+							"      {",
+							"        'key': 'client_secret',",
+							"        'value': secret",
+							"      },",
+							"      {",
+							"        'key': 'username',",
+							"        'value': username",
+							"      },",
+							"      {",
+							"        'key': 'password',",
+							"        'value': password",
+							"      }",
+							"    ]",
+							"  }",
+							"}, function (err, res) {",
+							"    console.log(res?.json()?.access_token);",
+							"  pm.variables.set(\"catalogo_videos_token\", res?.json()?.access_token);",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
