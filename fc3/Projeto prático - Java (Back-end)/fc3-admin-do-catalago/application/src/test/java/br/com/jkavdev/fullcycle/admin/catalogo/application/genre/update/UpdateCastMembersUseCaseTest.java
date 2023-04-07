@@ -83,7 +83,7 @@ public class UpdateCastMembersUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidCommandWithCategories_whenCallsUpdateGenre_shouldReturnGenreId() {
+    public void givenAValidCommandWithCategories_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
         // given
         final var aGenre = Genre.newGenre("acao", true);
 
@@ -110,6 +110,9 @@ public class UpdateCastMembersUseCaseTest extends UseCaseTest {
 
         when(genreGateway.update(any()))
                 .thenAnswer(returnsFirstArg());
+        
+        Thread.sleep(1);
+        
         // when
         final var actualOutput = useCase.execute(aCommand);
 

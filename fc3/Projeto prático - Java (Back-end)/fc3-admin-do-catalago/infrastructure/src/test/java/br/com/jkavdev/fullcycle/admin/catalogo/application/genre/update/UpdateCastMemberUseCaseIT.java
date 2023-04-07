@@ -36,7 +36,7 @@ public class UpdateCastMemberUseCaseIT {
     private GenreRepository genreRepository;
 
     @Test
-    public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() {
+    public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
         // given
         final var aGenre = genreGateway.create(Genre.newGenre("acao", true));
 
@@ -51,6 +51,8 @@ public class UpdateCastMemberUseCaseIT {
                 expectedIsActive,
                 asString(expectedCategories)
         );
+
+        Thread.sleep(1);
 
         // when
         final var actualOutput = useCase.execute(aCommand);
@@ -116,7 +118,7 @@ public class UpdateCastMemberUseCaseIT {
     }
 
     @Test
-    public void givenAValidCommandWithInactiveGenre_whenCallsUpdateGenre_shouldReturnGenreId() {
+    public void givenAValidCommandWithInactiveGenre_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
         // given
         final var aGenre = genreGateway.create(Genre.newGenre("acao", true));
 
@@ -134,6 +136,8 @@ public class UpdateCastMemberUseCaseIT {
 
         Assertions.assertTrue(aGenre.isActive());
         Assertions.assertNull(aGenre.getDeletedAt());
+
+        Thread.sleep(1);
 
         // when
         final var actualOutput = useCase.execute(aCommand);

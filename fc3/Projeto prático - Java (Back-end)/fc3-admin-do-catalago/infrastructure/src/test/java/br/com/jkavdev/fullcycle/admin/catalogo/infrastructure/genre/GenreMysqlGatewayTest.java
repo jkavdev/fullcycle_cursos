@@ -121,7 +121,7 @@ public class GenreMysqlGatewayTest {
     }
 
     @Test
-    public void givenAValidGenreWithoutCategories_whenCallsUpdateGenreWithCategories_shouldPersistGenre() {
+    public void givenAValidGenreWithoutCategories_whenCallsUpdateGenreWithCategories_shouldPersistGenre() throws InterruptedException {
         // given
         final var filmes =
                 categoryGateway.create(Category.newCategory("Filmes", null, true));
@@ -143,6 +143,8 @@ public class GenreMysqlGatewayTest {
 
         Assertions.assertEquals("ac", aGenre.getName());
         Assertions.assertEquals(0, aGenre.getCategories().size());
+
+        Thread.sleep(1);
 
         // when
         final var actualGenre = genreGateway.update(
@@ -173,7 +175,7 @@ public class GenreMysqlGatewayTest {
     }
 
     @Test
-    public void givenAValidGenreWithCategories_whenCallsUpdateGenreCleaningCategories_shouldPersistGenre() {
+    public void givenAValidGenreWithCategories_whenCallsUpdateGenreCleaningCategories_shouldPersistGenre() throws InterruptedException {
         // given
         final var filmes =
                 categoryGateway.create(Category.newCategory("Filmes", null, true));
@@ -196,6 +198,8 @@ public class GenreMysqlGatewayTest {
 
         Assertions.assertEquals("ac", aGenre.getName());
         Assertions.assertEquals(2, aGenre.getCategories().size());
+
+        Thread.sleep(1);
 
         // when
         final var actualGenre = genreGateway.update(
@@ -273,7 +277,7 @@ public class GenreMysqlGatewayTest {
     }
 
     @Test
-    public void givenAValidGenreActive_whenCallsUpdateGenreInactivating_shouldPersistGenre() {
+    public void givenAValidGenreActive_whenCallsUpdateGenreInactivating_shouldPersistGenre() throws InterruptedException {
         // given
         final var expectedName = "Ação";
         final var expectedIsActive = false;
@@ -289,6 +293,8 @@ public class GenreMysqlGatewayTest {
 
         Assertions.assertTrue(aGenre.isActive());
         Assertions.assertNull(aGenre.getDeletedAt());
+
+        Thread.sleep(1);
 
         // when
         final var actualGenre = genreGateway.update(

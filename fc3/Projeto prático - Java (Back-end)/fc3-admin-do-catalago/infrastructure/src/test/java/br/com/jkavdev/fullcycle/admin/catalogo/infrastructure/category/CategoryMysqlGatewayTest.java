@@ -57,7 +57,7 @@ public class CategoryMysqlGatewayTest {
     }
 
     @Test
-    public void givenAValidCategory_whenCallsUpdate_shouldReturnCategoryUpdated() {
+    public void givenAValidCategory_whenCallsUpdate_shouldReturnCategoryUpdated() throws InterruptedException {
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
@@ -78,6 +78,8 @@ public class CategoryMysqlGatewayTest {
 
         final var aUpdatedCategory = aCategory.clone()
                 .update(expectedName, expectedDescription, expectedIsActive);
+
+        Thread.sleep(1);
 
         final var actualCategory = categoryGateway.update(aUpdatedCategory);
 
