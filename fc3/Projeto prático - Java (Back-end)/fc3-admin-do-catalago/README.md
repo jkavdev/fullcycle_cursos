@@ -25,6 +25,8 @@ sdk install java 17..0.2-open
 
 ## Como executar?
 
+1. Com as definicoes de seguranca, para ter acesso a api, temos que configurar o keycloak
+
 2. Subir o banco de dados MySQL com Docker:
 ```shell
 docker-compose up -d
@@ -40,6 +42,13 @@ docker-compose up -d
 GOOGLE_CLOUD_CREDENTIALS=A \
   GOOGLE_CLOUD_PROJECT=A \
   ./gradlew bootRun
+``` 
+
+4.1. Executar a aplicação como SpringBoot app localmente:
+rodar o Main.java alterando as variaveis de ambiente GOOGLE_CLOUD_CREDENTIALS e GOOGLE_CLOUD_PROJECT_ID
+```shell
+GOOGLE_CLOUD_CREDENTIALS=google_cloud_project_id
+GOOGLE_CLOUD_PROJECT_ID=google_cloud_project_credentials_base64_encoded
 ``` 
 
 > Também é possível executar como uma aplicação Java através do
