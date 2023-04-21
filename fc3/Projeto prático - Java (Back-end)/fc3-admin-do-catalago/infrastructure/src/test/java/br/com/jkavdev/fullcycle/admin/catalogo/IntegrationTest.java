@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 // definindo profile de teste
-@ActiveProfiles("integration")
+@ActiveProfiles("test-integration")
 // para testes integrados precisamos do spring com todo o seu contexto
 @SpringBootTest(classes = WebServerConfig.class)
 // vinculando a extension para a limpeza de dados a cada teste com o jupiter

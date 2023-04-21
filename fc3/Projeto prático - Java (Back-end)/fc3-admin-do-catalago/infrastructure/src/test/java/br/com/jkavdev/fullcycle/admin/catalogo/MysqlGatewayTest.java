@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 // definindo profile de teste
-@ActiveProfiles("integration")
+@ActiveProfiles("test-integration")
 // configurando apenas o contexto jpa do spring
 @DataJpaTest
 // escaneando apenas os beans jpa
