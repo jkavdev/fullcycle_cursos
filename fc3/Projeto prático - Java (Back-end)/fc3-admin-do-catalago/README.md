@@ -25,30 +25,31 @@ sdk install java 17..0.2-open
 
 ## Como executar?
 
-1. Com as definicoes de seguranca, para ter acesso a api, temos que configurar o keycloak
-
-2. Subir o banco de dados MySQL com Docker:
+Como temos que rodar o containers que possuem as configuracoes das integracoes utililizadas pela aplicacao
+Temos que rodar o comando `sandbox/run.sh` para que seja configurado o volume da aplicacao e os container utilizados
 ```shell
-docker-compose up -d
+./run.sh
 ```
 
-3. Executar as migrações do MySQL com o Flyway:
+1. Executar as migrações do MySQL com o Flyway:
 ```shell
 ./gradlew flywayMigrate
 ```
 
-4. Executar a aplicação como SpringBoot app:
+2. Executar a aplicação como SpringBoot app:
 ```shell
 GOOGLE_CLOUD_CREDENTIALS=A \
-  GOOGLE_CLOUD_PROJECT=A \
+GOOGLE_CLOUD_PROJECT=A \
+SPRING_PROFILES_ACTIVE=sandbox \
   ./gradlew bootRun
 ``` 
 
-4.1. Executar a aplicação como SpringBoot app localmente:
+2.1. Executar a aplicação como SpringBoot app localmente:
 rodar o Main.java alterando as variaveis de ambiente GOOGLE_CLOUD_CREDENTIALS e GOOGLE_CLOUD_PROJECT_ID
 ```shell
 GOOGLE_CLOUD_CREDENTIALS=google_cloud_project_id
 GOOGLE_CLOUD_PROJECT_ID=google_cloud_project_credentials_base64_encoded
+SPRING_PROFILES_ACTIVE=sandbox
 ``` 
 
 > Também é possível executar como uma aplicação Java através do
