@@ -1,2 +1,7 @@
 # fullcycle_cursos
-Repositorios de cursos da FullCycle
+Kkq~
+rsAqAepositorios de cursos da FullCycleSD
+ASDASD
+QWE
+!qW
+`
