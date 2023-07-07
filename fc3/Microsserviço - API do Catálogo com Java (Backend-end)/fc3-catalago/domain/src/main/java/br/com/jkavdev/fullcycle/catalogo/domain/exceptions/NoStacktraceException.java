@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.catalogo.infrastructure.domain.exceptions;
+package br.com.jkavdev.fullcycle.catalogo.domain.exceptions;
 
 public class NoStacktraceException extends RuntimeException {
 

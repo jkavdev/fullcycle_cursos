@@ -22,19 +22,6 @@ public class CategoryValidator extends Validator {
 
     private void checkNameContraints() {
         final var name = this.category.getName();
-        if (name == null) {
-            this.validationHandler().append(new Error("'name' should not be null"));
-            return;
-        }
 
-        if (name.isBlank()) {
-            this.validationHandler().append(new Error("'name' should not be empty"));
-            return;
-        }
-
-        final var nameLength = name.trim().length();
-        if (nameLength < NAME_MIN_LENGTH || nameLength > NAME_MAX_LENGTH) {
-            this.validationHandler().append(new Error("'name' must be between 3 and 255 characters"));
-        }
     }
 }
