@@ -72,11 +72,11 @@ public class Category {
     }
 
     public Category validate(final ValidationHandler aHandler) {
-        if (id == null || id.isEmpty()) {
+        if (id == null || id.isBlank()) {
             aHandler.append(new Error("'id' should not be empty"));
         }
 
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isBlank()) {
             aHandler.append(new Error("'name' should not be empty"));
         }
         return this;

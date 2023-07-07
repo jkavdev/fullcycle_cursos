@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.catalogo.infrastructure.domain;
+package br.com.jkavdev.fullcycle.catalogo.domain;
 
 import org.junit.jupiter.api.Tag;
 
