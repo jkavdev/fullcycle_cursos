@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.catalogo.infrastructure.application;
+package br.com.jkavdev.fullcycle.catalogo;
 
 public abstract class UnityUseCase<IN> {
 
