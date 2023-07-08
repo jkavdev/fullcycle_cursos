@@ -1,6 +1,6 @@
 package br.com.jkavdev.fullcycle.catalogo.application.category.list;
 
-import br.com.jkavdev.fullcycle.catalogo.UseCase;
+import br.com.jkavdev.fullcycle.catalogo.application.UseCase;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.catalogo.domain.pagination.Pagination;

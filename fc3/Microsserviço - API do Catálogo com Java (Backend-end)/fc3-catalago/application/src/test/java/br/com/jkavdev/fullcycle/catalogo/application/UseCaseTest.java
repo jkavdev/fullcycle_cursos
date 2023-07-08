@@ -1,4 +1,4 @@
-package br.com.jkavdev.fullcycle.catalogo.infrastructure.application;
+package br.com.jkavdev.fullcycle.catalogo.application;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,12 +1,10 @@
-package br.com.jkavdev.fullcycle.catalogo.infrastructure.application.category.list;
+package br.com.jkavdev.fullcycle.catalogo.application.category.list;
 
-import br.com.jkavdev.fullcycle.catalogo.application.category.list.ListCategoryOutput;
-import br.com.jkavdev.fullcycle.catalogo.application.category.list.ListCategoryUseCase;
 import br.com.jkavdev.fullcycle.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.catalogo.domain.pagination.Pagination;
-import br.com.jkavdev.fullcycle.catalogo.infrastructure.application.UseCaseTest;
+import br.com.jkavdev.fullcycle.catalogo.application.UseCaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

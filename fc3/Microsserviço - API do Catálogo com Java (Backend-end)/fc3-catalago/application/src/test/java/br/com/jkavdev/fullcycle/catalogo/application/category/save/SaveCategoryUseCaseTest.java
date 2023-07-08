@@ -1,12 +1,11 @@
-package br.com.jkavdev.fullcycle.catalogo.infrastructure.application.category.save;
+package br.com.jkavdev.fullcycle.catalogo.application.category.save;
 
-import br.com.jkavdev.fullcycle.catalogo.application.category.save.SaveCategoryUseCase;
 import br.com.jkavdev.fullcycle.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.Category;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.CategoryGateway;
 import br.com.jkavdev.fullcycle.catalogo.domain.exceptions.DomainException;
 import br.com.jkavdev.fullcycle.catalogo.domain.utils.InstantUtils;
-import br.com.jkavdev.fullcycle.catalogo.infrastructure.application.UseCaseTest;
+import br.com.jkavdev.fullcycle.catalogo.application.UseCaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
