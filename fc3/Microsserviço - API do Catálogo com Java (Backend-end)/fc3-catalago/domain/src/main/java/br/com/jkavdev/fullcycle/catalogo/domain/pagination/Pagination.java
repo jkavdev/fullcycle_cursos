@@ -4,16 +4,23 @@ import java.util.List;
 import java.util.function.Function;
 
 public record Pagination<T>(
-        int currentPage,
-        int perPage,
-        long total,
-        List<T> items
+        Metadata metadata,
+        List<T> data
 ) {
 
+    public Pagination(
+            int currentPage,
+            int perPage,
+            long total,
+            List<T> data
+    ) {
+        this(new Metadata(currentPage, perPage, total), data);
+    }
+
     public <R> Pagination<R> map(final Function<T, R> mapper) {
-        final List<R> aNewList = this.items.stream()
+        final List<R> aNewList = this.data().stream()
                 .map(mapper)
                 .toList();
-        return new Pagination<>(currentPage(), perPage(), total(), aNewList);
+        return new Pagination<>(metadata(), aNewList);
     }
 }
