@@ -6,6 +6,7 @@ import br.com.jkavdev.fullcycle.catalogo.domain.Fixture;
 import br.com.jkavdev.fullcycle.catalogo.domain.category.CategorySearchQuery;
 import br.com.jkavdev.fullcycle.catalogo.domain.pagination.Pagination;
 import br.com.jkavdev.fullcycle.catalogo.infrastructure.GraphQLControllerTest;
+import br.com.jkavdev.fullcycle.catalogo.infrastructure.graphql.CategoryGraphQlController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,9 +17,10 @@ import org.springframework.graphql.test.tester.GraphQlTester;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@GraphQLControllerTest
+@GraphQLControllerTest(controllers = CategoryGraphQlController.class)
 public class CategoryGraphQlControllerTest {
 
     @MockBean
@@ -95,17 +97,24 @@ public class CategoryGraphQlControllerTest {
                 .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedCategories.size(), expectedCategories));
 
         final var query =
-        """
-        {
-         categories(search: "%s", page: %d, perPage: %d, sort: "%s", direction: "%s") {
-          id
-          name
-         }
-        }
-        """.formatted(expectedSearch, expectedPage, expectedPerPage, expectedSort, expectedDirection);
+                """
+                        query AllCategories($search: String, $page: Int, $perPage: Int, $sort: String, $direction: String){
+                                                
+                            categories(search: $search, page: $page, perPage: $perPage, sort: $sort, direction: $direction) {
+                              id
+                              name
+                            }
+                        }
+                        """;
 
         // when
-        final var res = this.graphql.document(query).execute();
+        final var res = this.graphql.document(query)
+                .variable("search", expectedSearch)
+                .variable("page", expectedPage)
+                .variable("perPage", expectedPerPage)
+                .variable("sort", expectedSort)
+                .variable("direction", expectedDirection)
+                .execute();
 
         final var actualCategories = res.path("categories")
                 .entityList(ListCategoryOutput.class)
@@ -119,7 +128,7 @@ public class CategoryGraphQlControllerTest {
 
         final var capturer = ArgumentCaptor.forClass(CategorySearchQuery.class);
 
-        verify(this.listCategoryUseCase, times(1)).execute(capturer.capture());
+        verify(this.listCategoryUseCase).execute(capturer.capture());
 
         final var actualQuery = capturer.getValue();
         Assertions.assertEquals(expectedPage, actualQuery.page());
